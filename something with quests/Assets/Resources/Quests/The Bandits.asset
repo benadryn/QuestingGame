@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d3a43eb96ee4441bc139943829de2b, type: 3}
+  m_Name: The Bandits
+  m_EditorClassIdentifier: 
+  id: 001
+  questName: Kill the Bandits
+  levelRequired: 0
+  experience: 100
+  description: There have been Bandits stealing from town, They have recently started
+    getting more violent and we need a hero to help get rid of them for us. Please
+    help us.
+  completedDescription: Thank you for saving us from those bandits. I don't have
+    much but here have this cookie.
+  requiredQuests: []
+  isCompleted: 0
+  isActive: 0
+  isHandedIn: 0
+  resetQuest: 1
+  enemyType: 1
+  objectives:
+  - description: Bandits killed
+    targetAmount: 5
+    currentAmount: 0
