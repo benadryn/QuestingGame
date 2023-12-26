@@ -28,6 +28,11 @@ public class BanditEnemy : MonoBehaviour
     private EnemyRespawn _enemyRespawn;
     private static readonly int IsDead = Animator.StringToHash("isDead");
     private static readonly int Damaged = Animator.StringToHash("Damaged");
+    
+    [Header("Audio")] 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip maleDamageSfx;
+    [SerializeField] private AudioClip maleDeathSfx;
 
     private void Awake()
     {
@@ -58,8 +63,11 @@ public class BanditEnemy : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Die();
+            audioSource.PlayOneShot(maleDeathSfx);
             enemyHealthBar.HideHealthBar();
+            return;
         }
+        audioSource.PlayOneShot(maleDamageSfx);
     }
     private void Die()
     {

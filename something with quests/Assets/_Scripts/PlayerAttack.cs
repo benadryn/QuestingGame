@@ -12,6 +12,10 @@ public class PlayerAttack : MonoBehaviour
     private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
     private static readonly int IsRunning = Animator.StringToHash("isRunning");
 
+    [Header("Audio")] 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip swordSwingSfx;
+
     [SerializeField] private Collider swordCollider;
 
     private void Awake()
@@ -35,7 +39,6 @@ public class PlayerAttack : MonoBehaviour
                 {
                     _playerMovement.RotateWhenAttacking();
                 }
-                
             }
         };
     }
@@ -69,6 +72,8 @@ public class PlayerAttack : MonoBehaviour
     private void StartAttack()
     {
         _isAttacking = true;
+        audioSource.PlayOneShot(swordSwingSfx);
+
     }
     private void StopAttack()
     {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager instance;
@@ -10,6 +9,7 @@ public class QuestManager : MonoBehaviour
     public List<QuestInfoSo> activeQuests = new List<QuestInfoSo>();
     public List<QuestInfoSo> completedQuests = new List<QuestInfoSo>();
     [SerializeField] private TextMeshProUGUI questDetailSide;
+    public bool questShowingOnUi;
 
     private void Awake()
     {
@@ -32,9 +32,10 @@ public class QuestManager : MonoBehaviour
 
     public void ShowQuest(QuestInfoSo quest)
     {
-        if (!activeQuests.Contains(quest) && AreRequiredQuestsCompleted(quest))
+        if (!activeQuests.Contains(quest) && AreRequiredQuestsCompleted(quest) && !questShowingOnUi)
         {
             _uiManager.UpdateQuestText(quest);
+            questShowingOnUi = true;
         }
     }
     
@@ -45,6 +46,7 @@ public class QuestManager : MonoBehaviour
             quest.isActive = true;
             activeQuests.Add(quest);
             UpdateSideQuestDetails(activeQuests);
+            questShowingOnUi = false;
         }
         
     }

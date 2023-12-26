@@ -1,20 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwordHit : MonoBehaviour
 {
-    [SerializeField] private LayerMask _layerToHit;
+    [SerializeField] private LayerMask layerToHit;
     [SerializeField] private FloatReference damageAmount;
-    private float maxDistance = 2.0f;
+    private float _maxDistance = 2.0f;
     private bool _isHit;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip swordHitSfx;
+    
+    
     public void SendHitRaycast()
     {
         Debug.DrawRay(transform.position, transform.forward, Color.white, 3.0f, true);
         Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, _layerToHit) && !_isHit)
+        if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, layerToHit) && !_isHit)
         {
             _isHit = true;
             BanditEnemy banditEnemy = hit.collider.GetComponent<BanditEnemy>();
@@ -23,6 +25,7 @@ public class SwordHit : MonoBehaviour
             {
                 banditEnemy.TakeDamage(damageAmount);
             }
+            audioSource.PlayOneShot(swordHitSfx);
         }
     }
 
@@ -37,6 +40,8 @@ public class SwordHit : MonoBehaviour
             {
                 banditEnemy.TakeDamage(damageAmount);
             }
+            audioSource.PlayOneShot(swordHitSfx);
+
         }
     }
 

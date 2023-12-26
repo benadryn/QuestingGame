@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +15,14 @@ public class PlayerMovement : MonoBehaviour
     private float _slowSpeed = 2.0f;
     [SerializeField] private float playerSpeed = 5.0f;
     [SerializeField] private float rotationSpeed = 5.0f;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioClip runningSfx;
+
+    [SerializeField] private AudioClip[] rollGruntSfx;
+
+    [SerializeField] private AudioSource audioSource;
+    private bool _runAudioPlaying;
 
     private Vector2 _currentMovement;
     private bool _isGrounded;
@@ -24,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     private const float Gravity = -9.81f;
     private Vector3 _direction;
     private float _velocity;
+    private bool _isRolling;
 
     private PlayerControls _playerControls;
     private InputAction _moveAction;
@@ -76,14 +84,24 @@ public class PlayerMovement : MonoBehaviour
         {
             _currentMovement = ctx.ReadValue<Vector2>();
             _isMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
+            
         };
-        _moveAction.canceled += ctx => _isMoving = false;
+        _moveAction.canceled += ctx =>
+        {
+            _isMoving = false;
+            _runAudioPlaying = false;
+            audioSource.Stop();
+            
+        };
 
         _rollAction.performed += ctx =>
         {
-            if (_isMoving)
+            if (_isMoving && !_isRolling && !_isAttacking)
             {
+                _isRolling = true;
                 _characterAnimator.SetBool(Roll, true);
+                var randomClip = UnityEngine.Random.Range(0, rollGruntSfx.Length);
+                audioSource.PlayOneShot(rollGruntSfx[randomClip]);
             }
             
         };
@@ -117,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
+        
         bool isDamaged = _characterAnimator.GetBool(IsDamaged);
         if (!_characterAnimator.GetBool(IsDead))
         {
@@ -135,6 +154,11 @@ public class PlayerMovement : MonoBehaviour
                 _direction = _currentMovement.y * cameraForward + _currentMovement.x * cameraRight;
                 _characterController.Move(_direction.normalized * (playerSpeed * Time.deltaTime));
                 
+                if (!_runAudioPlaying)
+                {
+                    audioSource.PlayOneShot(runningSfx);
+                    _runAudioPlaying = true;
+                }
                 HandleRotation();
             }
 
@@ -193,6 +217,7 @@ public class PlayerMovement : MonoBehaviour
     public void StopRollAnim()
     {
         _characterAnimator.SetBool(Roll, false);
+        _isRolling = false;
     }
 
     private void ApplyGravity()

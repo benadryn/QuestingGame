@@ -1,8 +1,6 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class NPC : MonoBehaviour, IInteractable
 {
@@ -13,6 +11,17 @@ public class NPC : MonoBehaviour, IInteractable
     private bool _hasUnacceptedQuests;
     private bool _hasFinishedQuests;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private AudioClip greetingsSfx;
+    [SerializeField] private AudioClip goodbyeSfx;
+    private bool _greetingsAudioPlaying;
+    private bool _goodbyeAudioPlaying = false;
+
+    public static Action playGoodbyeSfx;
+    
+    
     private void Start()
     {
         _questManager = QuestManager.instance;
@@ -21,6 +30,17 @@ public class NPC : MonoBehaviour, IInteractable
     private void Update()
     {
             SetQuestFloater();
+    }
+    
+    
+    private void OnEnable()
+    {
+        playGoodbyeSfx += PlayGoodbyeAudio;
+    }
+
+    private void OnDisable()
+    {
+        playGoodbyeSfx -= PlayGoodbyeAudio;
     }
     private void SetQuestFloater()
     {
@@ -36,7 +56,6 @@ public class NPC : MonoBehaviour, IInteractable
                 if (!_questManager.activeQuests.Contains(quest))
                 {
                     _hasUnacceptedQuests = true;
-                    // break;
                 }
             }
             else if (quest.isActive && !quest.isCompleted || quest.isHandedIn || !allRequiredQuestsCompleted || _questManager.completedQuests.Contains(quest))
@@ -48,7 +67,6 @@ public class NPC : MonoBehaviour, IInteractable
             {
                 npcQuestMarker.ShowQuestionMark();
                 _hasFinishedQuests = true;
-                // break;
             }
         }
 
@@ -79,17 +97,24 @@ public class NPC : MonoBehaviour, IInteractable
     {
         if (quest != null)
         {
-            if (!_questManager.activeQuests.Contains(quest) && !quest.isCompleted && !_hasFinishedQuests)
+            if (!_greetingsAudioPlaying)
+            {
+                PlayGreetingAudio();
+            }
+            if (!_questManager.activeQuests.Contains(quest) && !quest.isCompleted && !_hasFinishedQuests && !_questManager.questShowingOnUi)
             {
                 _questManager.ShowQuest(quest);
+                _greetingsAudioPlaying = false;
             }
 
-            else if(_questManager.activeQuests.Contains(quest) && quest.isCompleted && _hasFinishedQuests)
+            else if(_questManager.activeQuests.Contains(quest) && quest.isCompleted && _hasFinishedQuests && !_questManager.questShowingOnUi)
             {
                 HandInQuest(quest);
+                _goodbyeAudioPlaying = false;
             }
+
         }
-        
+
     }
 
     
@@ -99,6 +124,18 @@ public class NPC : MonoBehaviour, IInteractable
             {
                 UiManager.instance.HandInQuest(quest);
             }
+    }
+
+    private void PlayGreetingAudio()
+    {
+        audioSource.PlayOneShot(greetingsSfx);
+        _greetingsAudioPlaying = true;
+    }
+
+    private void PlayGoodbyeAudio()
+    {
+        audioSource.PlayOneShot(goodbyeSfx);
+        _goodbyeAudioPlaying = true;
     }
 
     public void Interact(Vector3 playerPosition, float distanceForDialog)

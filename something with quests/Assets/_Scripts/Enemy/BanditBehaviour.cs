@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +17,12 @@ public class BanditBehaviour : MonoBehaviour
     private bool _isDead;
     // private bool _isTooFarFromSpawn;
     private Animator _animator;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private AudioClip spottedPlayerSfx;
+     
     private static readonly int IsStill = Animator.StringToHash("IsStill");
     private static readonly int IsFollowing = Animator.StringToHash("IsFollowing");
     private static readonly int IsReturning = Animator.StringToHash("IsReturning");
@@ -62,6 +66,10 @@ public class BanditBehaviour : MonoBehaviour
 
     private void FollowPlayer()
     {
+        if (_atStartPos)
+        {
+            audioSource.PlayOneShot(spottedPlayerSfx);
+        }
         _animator.SetBool(IsStill, false);
         _animator.SetBool(IsFollowing, true);
         _animator.SetBool(IsReturning, false);
@@ -77,7 +85,7 @@ public class BanditBehaviour : MonoBehaviour
         }
         else
         {
-            StopAttack();
+            StopAttacking();
 
         }
     }
@@ -99,11 +107,12 @@ public class BanditBehaviour : MonoBehaviour
         RotateTowardsPlayer();
     }
 
-    private void StopAttack()
+    private void StopAttacking()
     {
         _animator.SetBool(IsAttacking, false);
         _animator.SetBool(IsStill, false);
         _animator.SetBool(IsFollowing, true);
+
     }
 
     private void StopMovingWhileAttacking()

@@ -47,7 +47,7 @@ public class UiManager : MonoBehaviour
     {
         _questManager.StartQuest(_currentQuest);
         questCanvas.enabled = false;
-
+        NPC.playGoodbyeSfx?.Invoke();
 
     }
 
@@ -57,18 +57,24 @@ public class UiManager : MonoBehaviour
         finishQuestTitle.text = quest.questName;
         finishQuestDescription.text = quest.completedDescription;
         _currentQuest = quest;
+        _questManager.questShowingOnUi = true;
+        // NPC.playGoodbyeSfx?.Invoke();
+
     }
 
     public void HandInQuestButton()
     {
         _questManager.HandInQuest(_currentQuest);
         finishQuestCanvas.enabled = false;
-        // _currentQuest = null;
+        _questManager.questShowingOnUi = false;
     }
 
     public void DeclineQuest()
     {
+        NPC.playGoodbyeSfx?.Invoke();
         questCanvas.enabled = false;
+        finishQuestCanvas.enabled = false;
         _currentQuest = null;
+        _questManager.questShowingOnUi = false;
     }
 }

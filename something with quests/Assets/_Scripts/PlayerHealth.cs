@@ -2,8 +2,8 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -21,6 +21,12 @@ public class PlayerHealth : MonoBehaviour
     private const float StartHp = 10.0f;
     private static readonly int IsDamaged = Animator.StringToHash("isDamaged");
     private static readonly int IsDead = Animator.StringToHash("isDead");
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip swordHitSfx;
+    [SerializeField] private AudioClip[] gruntHitSfx;
+    [SerializeField] private AudioClip playerDeathSfx;
 
     private void Awake()
     {
@@ -69,17 +75,21 @@ public class PlayerHealth : MonoBehaviour
 
         if (damage != null && playerHealth.Value > 0)
         {
+            int randomClip = Random.Range(0, gruntHitSfx.Length);
             playerHealth.ApplyChange(-damage.damageAmount);
             damageEvent.Invoke();
             _animator.SetBool(IsDamaged, true);
+            audioSource.PlayOneShot(swordHitSfx);
+            healthSlider.value = playerHealth.Value;
+            healthText.text = $"{playerHealth.Value}/{maxPlayerHealth.Value}";
             if (playerHealth.Value <= 0)
             {
                 playerHealth.Value = 0;
                 _animator.SetBool(IsDead, true);
+                audioSource.PlayOneShot(playerDeathSfx);
+                return;
             }
-
-            healthSlider.value = playerHealth.Value;
-            healthText.text = $"{playerHealth.Value}/{maxPlayerHealth.Value}";
+            audioSource.PlayOneShot(gruntHitSfx[randomClip]);
         }
     }
     

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,10 @@ public class PlayerExperience : MonoBehaviour
     private int _xpToLevel;
     private int _currentXp;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private AudioClip levelUpSfx;
 
     private void Awake()
     {
@@ -51,12 +56,26 @@ public class PlayerExperience : MonoBehaviour
         _currentXp += Mathf.RoundToInt(xpAmount / (1 + 0.05f * _level));
         if (_currentXp >= _xpToLevel)
         {
-            PlayerHealth.AddHpOnLevel?.Invoke();
-            _currentXp -= _xpToLevel;
-            _level++;
-            levelUpParticle.Play();
-            GetXpToLevel();
+            LevelUp();
         }
         UpdateXpText();
+    }
+
+    private void LevelUp()
+    {
+        PlayerHealth.AddHpOnLevel?.Invoke();
+        _currentXp -= _xpToLevel;
+        _level++;
+        levelUpParticle.Play();
+        StartCoroutine(StopLevelUpParticle());
+        GetXpToLevel();
+        audioSource.PlayOneShot(levelUpSfx);
+    }
+
+
+    private IEnumerator StopLevelUpParticle()
+    {
+        yield return new WaitForSeconds(0.2f);
+        levelUpParticle.Stop();
     }
 }
