@@ -41,7 +41,7 @@ public class QuestManager : MonoBehaviour
     
     public void StartQuest(QuestInfoSo quest)
     {
-        if (!activeQuests.Contains(quest))
+        if (!activeQuests.Contains(quest) && questShowingOnUi)
         {
             quest.isActive = true;
             activeQuests.Add(quest);
@@ -113,7 +113,10 @@ public class QuestManager : MonoBehaviour
 
     public void HandInQuest(QuestInfoSo quest)
     {
-        PlayerExperience.xpGain?.Invoke(quest.experience);
+        if (quest.isActive)
+        {
+            PlayerExperience.XpGain?.Invoke(quest.experience);
+        }
         quest.isActive = false;
         quest.isHandedIn = true;
         completedQuests.Add(quest);

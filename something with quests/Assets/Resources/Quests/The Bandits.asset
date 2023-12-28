@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 001
   questName: Kill the Bandits
   levelRequired: 0
-  experience: 100
+  experience: 77
   description: There have been Bandits stealing from town, They have recently started
     getting more violent and we need a hero to help get rid of them for us. Please
     help us.
@@ -29,5 +29,5 @@ MonoBehaviour:
   enemyType: 1
   objectives:
   - description: Bandits killed
-    targetAmount: 1
+    targetAmount: 5
     currentAmount: 0

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
@@ -29,18 +31,44 @@ public class PlayerAttack : MonoBehaviour
 
         _swordSwing.performed += ctx =>
         {
-            if (ctx.ReadValue<float>() != 0 )
-            { 
-                swordCollider.enabled = true;
-                // if (EventSystem.current.IsPointerOverGameObject()) return;
-                _playerAnimator.SetBool(IsAttacking, true);
+            // check if over a quest ui before attacking
+            if (!IsPointerOverUiNonAttackable("NonAttackableUi"))
+            {
+                
+                if (ctx.ReadValue<float>() != 0 )
+                { 
+                    swordCollider.enabled = true;
+                    // if (EventSystem.current.IsPointerOverGameObject()) return;
+                    _playerAnimator.SetBool(IsAttacking, true);
 
-                if (!_playerAnimator.GetBool(IsRunning))
-                {
-                    _playerMovement.RotateWhenAttacking();
+                    if (!_playerAnimator.GetBool(IsRunning))
+                    {
+                        _playerMovement.RotateWhenAttacking();
+                    }
                 }
             }
         };
+    }
+
+    private bool IsPointerOverUiNonAttackable(string tag)
+    {
+        PointerEventData pointer = new PointerEventData(EventSystem.current);
+        pointer.position = Input.mousePosition;
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointer, raycastResults);
+
+        if (raycastResults.Count > 0)
+        {
+            foreach (var result in raycastResults)
+            {
+                if (result.gameObject.CompareTag(tag))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void Start()

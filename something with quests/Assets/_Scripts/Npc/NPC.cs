@@ -16,10 +16,9 @@ public class NPC : MonoBehaviour, IInteractable
 
     [SerializeField] private AudioClip greetingsSfx;
     [SerializeField] private AudioClip goodbyeSfx;
-    private bool _greetingsAudioPlaying;
-    private bool _goodbyeAudioPlaying = false;
+    private bool _audioPlaying;
 
-    public static Action playGoodbyeSfx;
+    public static Action PlayGoodbyeSfx;
     
     
     private void Start()
@@ -35,12 +34,12 @@ public class NPC : MonoBehaviour, IInteractable
     
     private void OnEnable()
     {
-        playGoodbyeSfx += PlayGoodbyeAudio;
+        PlayGoodbyeSfx += PlayGoodbyeAudio;
     }
 
     private void OnDisable()
     {
-        playGoodbyeSfx -= PlayGoodbyeAudio;
+        PlayGoodbyeSfx -= PlayGoodbyeAudio;
     }
     private void SetQuestFloater()
     {
@@ -97,20 +96,20 @@ public class NPC : MonoBehaviour, IInteractable
     {
         if (quest != null)
         {
-            if (!_greetingsAudioPlaying)
+            if (!_audioPlaying)
             {
                 PlayGreetingAudio();
             }
             if (!_questManager.activeQuests.Contains(quest) && !quest.isCompleted && !_hasFinishedQuests && !_questManager.questShowingOnUi)
             {
                 _questManager.ShowQuest(quest);
-                _greetingsAudioPlaying = false;
+                _audioPlaying = false;
             }
 
             else if(_questManager.activeQuests.Contains(quest) && quest.isCompleted && _hasFinishedQuests && !_questManager.questShowingOnUi)
             {
                 HandInQuest(quest);
-                _goodbyeAudioPlaying = false;
+                _audioPlaying = false;
             }
 
         }
@@ -129,13 +128,13 @@ public class NPC : MonoBehaviour, IInteractable
     private void PlayGreetingAudio()
     {
         audioSource.PlayOneShot(greetingsSfx);
-        _greetingsAudioPlaying = true;
+        _audioPlaying = true;
     }
 
     private void PlayGoodbyeAudio()
     {
         audioSource.PlayOneShot(goodbyeSfx);
-        _goodbyeAudioPlaying = true;
+        _audioPlaying = true;
     }
 
     public void Interact(Vector3 playerPosition, float distanceForDialog)

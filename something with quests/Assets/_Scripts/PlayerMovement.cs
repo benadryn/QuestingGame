@@ -80,43 +80,46 @@ public class PlayerMovement : MonoBehaviour
         _moveAction = _playerControls.Player.Movement;
         _rollAction = _playerControls.Player.Roll;
 
-        _moveAction.performed += ctx =>
-        {
-            _currentMovement = ctx.ReadValue<Vector2>();
-            _isMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
-            
-        };
-        _moveAction.canceled += ctx =>
-        {
-            _isMoving = false;
-            _runAudioPlaying = false;
-            audioSource.Stop();
-            
-        };
+        _moveAction.performed += OnMovePerformed;
+        _moveAction.canceled += OnMoveCanceled;
+        
+        _rollAction.performed += OnRollPerformed;
 
-        _rollAction.performed += ctx =>
-        {
-            if (_isMoving && !_isRolling && !_isAttacking)
-            {
-                _isRolling = true;
-                _characterAnimator.SetBool(Roll, true);
-                var randomClip = UnityEngine.Random.Range(0, rollGruntSfx.Length);
-                audioSource.PlayOneShot(rollGruntSfx[randomClip]);
-            }
-            
-        };
     }
+
+    private void OnMovePerformed(InputAction.CallbackContext ctx)
+    {
+        _currentMovement = ctx.ReadValue<Vector2>();
+        _isMoving = _currentMovement.x != 0 || _currentMovement.y != 0;
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext ctx)
+    {
+        _isMoving = false;
+        _runAudioPlaying = false;
+        audioSource.Stop();
+    }
+
+    private void OnRollPerformed(InputAction.CallbackContext ctx)
+    {
+        if (_isMoving && !_isRolling && !_isAttacking)
+        {
+            _isRolling = true;
+            _characterAnimator.SetBool(Roll, true);
+            var randomClip = UnityEngine.Random.Range(0, rollGruntSfx.Length);
+            audioSource.PlayOneShot(rollGruntSfx[randomClip]);
+        }        
+    }
+
 
     private void OnEnable()
     {
-        _moveAction.Enable();
-        _rollAction.Enable();
+        _playerControls.Enable();
     }
 
     private void OnDisable()
     {
-        _moveAction.Disable();
-        _rollAction.Disable();
+        _playerControls.Disable();
     }
 
     private void Update()

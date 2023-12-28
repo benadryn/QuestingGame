@@ -8,7 +8,7 @@ public class CameraControls : MonoBehaviour
     private void Update()
     {               
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(1))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
             Cursor.visible = false;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerExperience : MonoBehaviour
 {
-    public static Action<int> xpGain;
+    public static Action<int> XpGain;
     [SerializeField] private Slider xpSlider;
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI levelText;
@@ -29,12 +29,12 @@ public class PlayerExperience : MonoBehaviour
 
     private void OnEnable()
     {
-        xpGain += AddXpToCharacter;
+        XpGain += AddXpToCharacter;
     }
-
+    
     private void OnDisable()
     {
-        xpGain -= AddXpToCharacter;
+        XpGain -= AddXpToCharacter;
     }
 
     private void GetXpToLevel()

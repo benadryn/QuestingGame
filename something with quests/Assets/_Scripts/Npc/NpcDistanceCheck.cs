@@ -9,29 +9,29 @@ interface IInteractable
 public class NpcDistanceCheck : MonoBehaviour
 {
     [SerializeField] private float npcDistanceForDialog = 3.0f;
-    private int npcQuestLayerMask;
+    private int _npcQuestLayerMask;
     
     private PlayerControls _playerControls;
     private InputAction _interact;
 
     private void Awake()
     {
-        npcQuestLayerMask = LayerMask.GetMask("QuestNpc");
+        _npcQuestLayerMask = LayerMask.GetMask("QuestNpc");
         _playerControls = new PlayerControls();
         _interact = _playerControls.Player.Interacting;
     }
 
     private void FixedUpdate()
     {
-        NpcDialogDistance(transform.position, npcDistanceForDialog, npcQuestLayerMask);
+        NpcDialogDistance(transform.position, npcDistanceForDialog, _npcQuestLayerMask);
     }
 
     // checking from player to an npc
     void NpcDialogDistance(Vector3 center, float radius, int layerMask)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(center, radius, layerMask);
-        
-        
+        var hitColliders = Physics.OverlapSphere(center, radius, layerMask);
+
+
         foreach (var hitCollider in hitColliders)
         {
             _interact.performed += ctx =>

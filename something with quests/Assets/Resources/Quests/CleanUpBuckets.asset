@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 003
   questName: Clean Up Buckets
   levelRequired: 0
-  experience: 75
+  experience: 69
   description: The Bandits come here steal all of our stuff then leave giant buckets
     of worms. Please help clean this place up for us.
   completedDescription: Thank you very much i hope the smile on my face is enough
@@ -28,5 +28,5 @@ MonoBehaviour:
   enemyType: 0
   objectives:
   - description: Worm Buckets cleaned
-    targetAmount: 1
+    targetAmount: 5
     currentAmount: 0
