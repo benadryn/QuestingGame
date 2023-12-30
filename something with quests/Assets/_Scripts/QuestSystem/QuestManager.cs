@@ -116,6 +116,7 @@ public class QuestManager : MonoBehaviour
         if (quest.isActive)
         {
             PlayerExperience.XpGain?.Invoke(quest.experience);
+            NPC.PlayGoodbyeSfx?.Invoke();
         }
         quest.isActive = false;
         quest.isHandedIn = true;

@@ -148,4 +148,9 @@ public class NPC : MonoBehaviour, IInteractable
             }
         }
     }
+
+    public bool HasQuests()
+    {
+        return _hasFinishedQuests || _hasUnacceptedQuests;
+    }
 }

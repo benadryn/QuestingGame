@@ -180,32 +180,33 @@ public class PlayerMovement : MonoBehaviour
     
     private void HandleDamaged()
     {
-        if (_characterAnimator.GetBool(IsDamaged))
-        {
-            _characterAnimator.SetBool(Roll, false);
-            _characterAnimator.SetBool(IsAttacking, false);
-        }
+        if (!_characterAnimator.GetBool(IsDamaged)) return;
+        _characterAnimator.SetBool(Roll, false);
+        _characterAnimator.SetBool(IsAttacking, false);
     }
-
-    public void RotateWhenAttacking()
-    {
-        var transform1 = transform;
-        var oldRotation = transform1.rotation;
-        var newRotation =
-            new Quaternion(oldRotation.x, playerCamera.transform.rotation.y, oldRotation.z, playerCamera.transform.rotation.w);
-        transform1.rotation = newRotation;
-    }
-    
     private void HandleRotation()
     {
-        // if attacking will rotate in the direction of the camera
         if (_characterAnimator.GetBool(IsAttacking) && _isMoving)
         {
             RotateWhenAttacking();
         }
+        else
+        {
+            RotateNormal();
+        }
+    }
+
+    private void RotateNormal()
+    {
         float targetAngle = Mathf.Atan2(_currentMovement.x, _currentMovement.y) * Mathf.Rad2Deg;
         float newAngle = Mathf.LerpAngle(transform.eulerAngles.y, targetAngle + playerCamera.transform.eulerAngles.y, Time.deltaTime * rotationSpeed);
         transform.rotation = Quaternion.Euler(0.0f, newAngle, 0.0f);
+    }
+
+    public void RotateWhenAttacking()
+    {
+        Quaternion targetRotation = playerCamera.transform.rotation;
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 
     private void CheckSpeedAnim()
