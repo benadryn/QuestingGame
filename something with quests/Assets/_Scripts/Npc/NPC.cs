@@ -23,7 +23,7 @@ public class NPC : MonoBehaviour, IInteractable
     
     private void Start()
     {
-        _questManager = QuestManager.instance;
+        _questManager = QuestManager.Instance;
     }
 
     private void Update()

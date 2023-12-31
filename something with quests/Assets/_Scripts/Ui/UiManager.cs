@@ -36,7 +36,7 @@ public class UiManager : MonoBehaviour
     
     private void Start()
     {
-        _questManager = QuestManager.instance;
+        _questManager = QuestManager.Instance;
         
         questCanvas.enabled = false;
         finishQuestCanvas.enabled = false;

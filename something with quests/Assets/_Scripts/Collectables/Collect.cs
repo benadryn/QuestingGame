@@ -13,13 +13,13 @@ public class Collect : MonoBehaviour
     private void Start()
     {
         _collider = GetComponent<Collider>();
-        _questManager = QuestManager.instance;
+        _questManager = QuestManager.Instance;
         _id = gameObject.tag;
     }
 
     private void Update()
     {
-        foreach (var quest in _questManager.activeQuests.Where(quest => quest.id == _id))
+        foreach (var unused in _questManager.activeQuests.Where(quest => quest.id == _id))
         {
             SetCollectable();
         }
@@ -29,7 +29,7 @@ public class Collect : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            QuestManager.instance.AdvanceCollectQuest(GetQuestId());
+            QuestManager.Instance.AdvanceCollectQuest(GetQuestId());
             Destroy(gameObject);
         }
     }

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 public class QuestManager : MonoBehaviour
 {
-    public static QuestManager instance;
+    public static QuestManager Instance;
 
     private UiManager _uiManager;
     public List<QuestInfoSo> activeQuests = new List<QuestInfoSo>();
@@ -13,9 +13,9 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
@@ -103,7 +103,7 @@ public class QuestManager : MonoBehaviour
         UpdateSideQuestDetails(activeQuests);
     }
 
-    public void CompleteQuest(QuestInfoSo quest)
+    private void CompleteQuest(QuestInfoSo quest)
     {
         if (activeQuests.Contains(quest))
         {

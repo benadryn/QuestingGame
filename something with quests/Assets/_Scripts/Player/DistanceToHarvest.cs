@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -9,9 +10,9 @@ interface IHarvestable
 
 public class DistanceToHarvest : MonoBehaviour
 {
-
     [SerializeField] private Slider harvestSlider;
     [SerializeField] private float harvestDistance = 2.0f;
+    [SerializeField] private TextMeshProUGUI harvestText;
     
     private int _harvestLayerMask;
     private PlayerControls _playerControls;
@@ -25,18 +26,11 @@ public class DistanceToHarvest : MonoBehaviour
         _playerControls = new PlayerControls();
         _harvest = _playerControls.Player.Harvest;
         harvestSlider.gameObject.SetActive(false);
-
-        
-
     }
 
     private void FixedUpdate()
     {
-        if (_harvest.IsPressed())
-        {
-            CheckForHarvestableDistance(transform.position, harvestDistance, _harvestLayerMask);
-        }
-
+        CheckForHarvestableDistance(transform.position, harvestDistance, _harvestLayerMask);
         if (_harvest.WasReleasedThisFrame())
         {
             ResetHarvestSlider();
@@ -46,9 +40,13 @@ public class DistanceToHarvest : MonoBehaviour
     void CheckForHarvestableDistance(Vector3 center, float radius, int layerMask)
     {
             Collider[] hitColliders = Physics.OverlapSphere(center, radius, layerMask);
+            harvestText.enabled = hitColliders.Length > 0;
             foreach (var hitCollider in hitColliders)
             {
-                Harvest(hitCollider);
+                if (_harvest.IsPressed())
+                {
+                    Harvest(hitCollider);
+                }
             }
     }
     
@@ -67,9 +65,13 @@ public class DistanceToHarvest : MonoBehaviour
 
                 if (harvestSlider.value <= 0f)
                 {
+                    QuestManager.Instance.AdvanceCollectQuest(hitCollider.gameObject.tag);
                     Destroy(hitCollider.gameObject);
                     ResetHarvestSlider();
                 }
+            }else
+            {
+                ResetHarvestSlider();
             }
         }
     }
@@ -89,4 +91,6 @@ public class DistanceToHarvest : MonoBehaviour
     {
         _harvest.Disable();
     }
+    
+    
 }

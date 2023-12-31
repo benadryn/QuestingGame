@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6d3a43eb96ee4441bc139943829de2b, type: 3}
-  m_Name: CollectRedCoins
+  m_Name: Harvest Swords
   m_EditorClassIdentifier: 
   id: 004
-  questName: Collect red coins
+  questName: Harvest Swords
   levelRequired: 0
-  experience: 232
-  description: Collect the red coins
+  experience: 69
+  description: The swords are lovely this time of year, but my back has been aching.
+    Will you please harvest them for me.
   completedDescription: thanks bitch
-  requiredQuests:
-  - {fileID: 11400000, guid: 3eb47fab14494204f8b392a4fc99b851, type: 2}
+  requiredQuests: []
   isCompleted: 0
   isActive: 0
   isHandedIn: 0
   resetQuest: 1
   enemyType: 0
   objectives:
-  - description: red coins collected
-    targetAmount: 2
+  - description: Swords Harvested
+    targetAmount: 3
     currentAmount: 0

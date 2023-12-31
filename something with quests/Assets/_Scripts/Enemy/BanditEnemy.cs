@@ -74,7 +74,7 @@ public class BanditEnemy : MonoBehaviour
         _animator.SetBool(IsDead, true);
         _collider.enabled = false;
         _navMeshAgent.enabled = false;
-        QuestManager.instance.AdvanceKillQuest(GetQuestId(), enemyType);
+        QuestManager.Instance.AdvanceKillQuest(GetQuestId(), enemyType);
         PlayerExperience.XpGain?.Invoke(xpToGive);
         StartCoroutine(_enemyRespawn.Respawn(respawnTime, prefab, _startPosition, _startRotation, gameObject));
         
