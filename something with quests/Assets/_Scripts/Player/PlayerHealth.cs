@@ -96,6 +96,5 @@ public class PlayerHealth : MonoBehaviour
     public void ResetDamaged()
     {
         _animator.SetBool(IsDamaged, false);
-
     }
 }

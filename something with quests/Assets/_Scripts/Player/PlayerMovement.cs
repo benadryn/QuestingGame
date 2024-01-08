@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isGrounded;
     private bool _isMoving;
     private bool _isAttacking;
+    private bool _isHeavyAttacking;
     private const float Gravity = -9.81f;
     private Vector3 _direction;
     private float _velocity;
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
     private static readonly int IsDamaged = Animator.StringToHash("isDamaged");
     private static readonly int IsDead = Animator.StringToHash("isDead");
+    private static readonly int IsHeavyAttacking = Animator.StringToHash("isHeavyAttacking");
 
     private void Awake()
     {
@@ -127,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         CheckSpeedAnim();
         _characterAnimator.SetBool(IsRunning, _isMoving);
         _isAttacking = _characterAnimator.GetBool(IsAttacking);
+        _isHeavyAttacking = _characterAnimator.GetBool(IsHeavyAttacking);
     }
 
     private void FixedUpdate()
@@ -145,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
             
             if (_isMoving)
             {
-                playerSpeed = _isAttacking || isDamaged ? _slowSpeed : _originalSpeed;
+                playerSpeed = _isHeavyAttacking || _isAttacking || isDamaged ? _slowSpeed : _originalSpeed;
                 var transform1 = playerCamera.transform;
                 Vector3 cameraForward = transform1.forward;
                 Vector3 cameraRight = transform1.right;
@@ -186,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleRotation()
     {
-        if (_characterAnimator.GetBool(IsAttacking) && _isMoving)
+        if (_characterAnimator.GetBool(IsAttacking))
         {
             RotateWhenAttacking();
         }
@@ -206,6 +209,7 @@ public class PlayerMovement : MonoBehaviour
     public void RotateWhenAttacking()
     {
         Quaternion targetRotation = playerCamera.transform.rotation;
+        targetRotation.eulerAngles = new Vector3(0, targetRotation.eulerAngles.y, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 

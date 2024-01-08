@@ -80,6 +80,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Show Bag"",
+                    ""type"": ""Button"",
+                    ""id"": ""14c981e7-f76d-48b5-8122-3d3f05a5d612"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -280,6 +289,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Harvest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a618b6a-acff-4adb-9b59-38413b94843e"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Show Bag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -294,6 +314,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Interacting = m_Player.FindAction("Interacting", throwIfNotFound: true);
         m_Player_Roll = m_Player.FindAction("Roll", throwIfNotFound: true);
         m_Player_Harvest = m_Player.FindAction("Harvest", throwIfNotFound: true);
+        m_Player_ShowBag = m_Player.FindAction("Show Bag", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -361,6 +382,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interacting;
     private readonly InputAction m_Player_Roll;
     private readonly InputAction m_Player_Harvest;
+    private readonly InputAction m_Player_ShowBag;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -371,6 +393,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Interacting => m_Wrapper.m_Player_Interacting;
         public InputAction @Roll => m_Wrapper.m_Player_Roll;
         public InputAction @Harvest => m_Wrapper.m_Player_Harvest;
+        public InputAction @ShowBag => m_Wrapper.m_Player_ShowBag;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -398,6 +421,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Harvest.started += instance.OnHarvest;
             @Harvest.performed += instance.OnHarvest;
             @Harvest.canceled += instance.OnHarvest;
+            @ShowBag.started += instance.OnShowBag;
+            @ShowBag.performed += instance.OnShowBag;
+            @ShowBag.canceled += instance.OnShowBag;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -420,6 +446,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Harvest.started -= instance.OnHarvest;
             @Harvest.performed -= instance.OnHarvest;
             @Harvest.canceled -= instance.OnHarvest;
+            @ShowBag.started -= instance.OnShowBag;
+            @ShowBag.performed -= instance.OnShowBag;
+            @ShowBag.canceled -= instance.OnShowBag;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -445,5 +474,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnInteracting(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnHarvest(InputAction.CallbackContext context);
+        void OnShowBag(InputAction.CallbackContext context);
     }
 }

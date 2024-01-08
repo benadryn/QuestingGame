@@ -4,8 +4,10 @@ public class SwordHit : MonoBehaviour
 {
     [SerializeField] private LayerMask layerToHit;
     [SerializeField] private FloatReference damageAmount;
-    private float _maxDistance = 2.0f;
+    [SerializeField] private float maxDistance = 2.0f;
     private bool _isHit;
+
+    private BanditEnemy _banditEnemy;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -14,16 +16,18 @@ public class SwordHit : MonoBehaviour
     
     public void SendHitRaycast()
     {
-        Debug.DrawRay(transform.position, transform.forward, Color.white, 3.0f, true);
-        Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance, layerToHit) && !_isHit)
+        var transform1 = transform;
+        var forward = transform1.forward;
+        Debug.DrawRay(transform1.position, forward, Color.white, 3.0f, true);
+        Ray ray = new Ray(transform.position, forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, layerToHit) && !_isHit)
         {
             _isHit = true;
-            BanditEnemy banditEnemy = hit.collider.GetComponent<BanditEnemy>();
+            _banditEnemy = hit.collider.GetComponent<BanditEnemy>();
 
-            if (banditEnemy != null)
+            if (_banditEnemy != null)
             {
-                banditEnemy.TakeDamage(damageAmount);
+                _banditEnemy.TakeDamage(damageAmount);
             }
             audioSource.PlayOneShot(swordHitSfx);
         }

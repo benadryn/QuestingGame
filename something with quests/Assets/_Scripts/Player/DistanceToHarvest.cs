@@ -52,27 +52,25 @@ public class DistanceToHarvest : MonoBehaviour
     
     private void Harvest(Collider hitCollider)
     {
-        if (hitCollider.gameObject.TryGetComponent(out IHarvestable harvestObj))
+        if (!hitCollider.gameObject.TryGetComponent(out IHarvestable harvestObj)) return;
+        var position = transform.position;
+        var harvestResult = harvestObj.Harvestable(position, harvestDistance);
+        _harvestTime = harvestResult.Item2;
+
+        if (harvestResult.Item1)
         {
-            var position = transform.position;
-            var harvestResult = harvestObj.Harvestable(position, harvestDistance);
-            _harvestTime = harvestResult.Item2;
+            harvestSlider.gameObject.SetActive(true);
+            harvestSlider.value = Mathf.Clamp01(harvestSlider.value - (1f / _harvestTime) * Time.deltaTime);
 
-            if (harvestResult.Item1)
+            if (harvestSlider.value <= 0f)
             {
-                harvestSlider.gameObject.SetActive(true);
-                harvestSlider.value = Mathf.Clamp01(harvestSlider.value - (1f / _harvestTime) * Time.deltaTime);
-
-                if (harvestSlider.value <= 0f)
-                {
-                    QuestManager.Instance.AdvanceCollectQuest(hitCollider.gameObject.tag);
-                    Destroy(hitCollider.gameObject);
-                    ResetHarvestSlider();
-                }
-            }else
-            {
+                QuestManager.Instance.AdvanceCollectQuest(hitCollider.gameObject.tag);
+                Destroy(hitCollider.gameObject);
                 ResetHarvestSlider();
             }
+        }else
+        {
+            ResetHarvestSlider();
         }
     }
 

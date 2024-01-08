@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SendRay : MonoBehaviour
 {
-    public void SendHitRaycast(Ray ray, float maxDistance, LayerMask _layerToHit)
+    public void SendHitRaycast(Ray ray, float maxDistance, LayerMask layerToHit)
     {
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, _layerToHit))
+        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, layerToHit))
         {
             Debug.Log("this ray hit an " + hit);
         }
