@@ -82,6 +82,34 @@ public class DisplayInventory : MonoBehaviour
         };
         entryExit.callback.AddListener((data) => {OnPointerExitTooltip();});
         trigger.triggers.Add(entryExit);
+        
+        // Click event
+        EventTrigger.Entry entryClick = new EventTrigger.Entry()
+        {
+            eventID = EventTriggerType.PointerClick
+        };
+        if (trigger.triggers.Exists(entry => entry.eventID == EventTriggerType.PointerClick)) return;
+        {
+            entryClick.callback.AddListener((data) => { OnPointerClickItem(slot);});
+            trigger.triggers.Add(entryClick);
+        }
+    }
+
+    private void OnPointerClickItem(InventoryObject.InventorySlot slot)
+    {
+        if (slot.item.type == ItemType.Consumable)
+        {
+            PlayerHealth.OnPotionUsed?.Invoke(slot.item.buffs[0].value);
+
+            int remainingAmount = inventory.RemoveItem(slot.item);
+            
+            if (remainingAmount <= 1 && itemsDisplayed.ContainsKey(slot))
+            {
+                Destroy(itemsDisplayed[slot]);
+                itemsDisplayed.Remove(slot);
+                tooltipPrefab.SetActive(false);
+            }
+        }
     }
 
 
@@ -93,11 +121,11 @@ public class DisplayInventory : MonoBehaviour
 
         
             TextMeshProUGUI tooltipText = tooltipPrefab.GetComponentInChildren<TextMeshProUGUI>();
-            tooltipText.text = $"{slot.item.name.ToUpper()} \n\nStats: {GetStatsText(slot)} \n{slot.item.description}";
+            tooltipText.text = $"{slot.item.name.ToUpper()} \n\nStats: \n{GetStatsText(slot)} \n{slot.item.description}";
 
             RectTransform tooltipRect = tooltipPrefab.GetComponent<RectTransform>();
             Vector3 mousePos = Input.mousePosition;
-            tooltipRect.position = new Vector3(mousePos.x - 100f, mousePos.y - 150f, 0f);
+            tooltipRect.position = new Vector3(mousePos.x - 100f, mousePos.y + 200f, 0f);
         }
     }
 
@@ -116,5 +144,6 @@ public class DisplayInventory : MonoBehaviour
     {
         tooltipPrefab.SetActive(false);
     }
+    
    
 }

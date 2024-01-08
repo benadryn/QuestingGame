@@ -16,6 +16,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private UnityEvent damageEvent;
     [SerializeField] private float hpPerLevelGain = 2.0f;
     private Animator _animator;
+
+    public delegate void OnPotionUsedHandler(float amount);
+    public static OnPotionUsedHandler OnPotionUsed;
     
     [SerializeField] private bool resetHp;
     private const float StartHp = 10.0f;
@@ -43,11 +46,13 @@ public class PlayerHealth : MonoBehaviour
     private void OnEnable()
     {
         AddHpOnLevel += AddToHealthOnLevelGain;
+        OnPotionUsed += HealPlayer;
     }
 
     private void OnDisable()
     {
         AddHpOnLevel -= AddToHealthOnLevelGain;
+        OnPotionUsed -= HealPlayer;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -96,5 +101,18 @@ public class PlayerHealth : MonoBehaviour
     public void ResetDamaged()
     {
         _animator.SetBool(IsDamaged, false);
+    }
+
+    private void HealPlayer(float amount)
+    {
+        if (playerHealth.Value + amount > maxPlayerHealth.Value)
+        {
+            playerHealth.Value = maxPlayerHealth.Value;
+        }
+        else
+        {
+            playerHealth.Value += amount;
+        }
+        UpdateHpText();
     }
 }

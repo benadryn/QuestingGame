@@ -30,6 +30,28 @@ public class InventoryObject : ScriptableObject
         container.items.Add(new InventorySlot(_item.Id, _item, _amount));
     }
 
+    public int RemoveItem(Item _item)
+    {
+        foreach (var inventorySlot in container.items)
+        {
+            if (inventorySlot.item == _item)
+            {
+                if (inventorySlot.amount > 1)
+                {
+                    inventorySlot.RemoveAmount(1);
+                    return inventorySlot.amount;
+                }
+                else
+                {
+                    container.items.Remove(inventorySlot);
+                    return inventorySlot.amount;
+                }
+            }
+        }
+
+        return -1;
+    }
+
 
     [ContextMenu("Save")]
     public void Save()
@@ -81,6 +103,12 @@ public class InventoryObject : ScriptableObject
         public void AddAmount(int value)
         {
             amount += value;
+        }
+
+        public int RemoveAmount(int value)
+        {
+            amount -= value;
+            return amount;
         }
     }
 }

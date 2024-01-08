@@ -8,11 +8,11 @@ public class PlayerInventory : MonoBehaviour
 
     private void Awake()
     {
-        inventory.Load();
         if (resetInventory)
         {
             inventory.Clear();
         }
+        inventory.Load();
     }
 
     private void Update()
