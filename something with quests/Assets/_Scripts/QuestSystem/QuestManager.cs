@@ -6,6 +6,7 @@ public class QuestManager : MonoBehaviour
     public static QuestManager Instance;
 
     private UiManager _uiManager;
+    private DisplayInventory _displayInventory;
     public List<QuestInfoSo> activeQuests = new List<QuestInfoSo>();
     public List<QuestInfoSo> completedQuests = new List<QuestInfoSo>();
     [SerializeField] private TextMeshProUGUI questDetailSide;
@@ -28,7 +29,14 @@ public class QuestManager : MonoBehaviour
     private void Start()
     {
         _uiManager = UiManager.instance;
+        _displayInventory = DisplayInventory.Instance;
+
+        if (!_displayInventory)
+        {
+            Debug.Log("display inventory is null");
+        }
     }
+    
 
     public void ShowQuest(QuestInfoSo quest)
     {
@@ -122,6 +130,12 @@ public class QuestManager : MonoBehaviour
         quest.isHandedIn = true;
         completedQuests.Add(quest);
         activeQuests.Remove(quest);
+        if (quest.questReward)
+        {
+            Item questItem = quest.questReward.CreateItem();
+            Debug.Log(questItem);
+            _displayInventory.inventory.AddItem(questItem, 1);
+        }
         RemoveSideQuestDetails();
     }
 

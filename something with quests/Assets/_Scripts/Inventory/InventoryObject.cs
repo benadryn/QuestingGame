@@ -12,6 +12,7 @@ public class InventoryObject : ScriptableObject
     public ItemDataBaseObject database;
     public Inventory container;
 
+    
     public void AddItem(Item _item, int _amount)
     {
         if (_item.buffs is { Length: > 0 } && _item.type != ItemType.Consumable)
@@ -27,7 +28,7 @@ public class InventoryObject : ScriptableObject
             return;
         }
 
-        container.items.Add(new InventorySlot(_item.Id, _item, _amount));
+        container.items.Add(new InventorySlot(_item.Id, _item , _amount));
     }
 
     public int RemoveItem(Item _item)
@@ -51,6 +52,7 @@ public class InventoryObject : ScriptableObject
 
         return -1;
     }
+
 
 
     [ContextMenu("Save")]
@@ -93,7 +95,7 @@ public class InventoryObject : ScriptableObject
         public Item item;
         public int amount;
 
-        public InventorySlot(int _id, Item _item, int _amount)
+        public InventorySlot(int _id, Item _item,int _amount)
         {
             id = _id;
             item = _item;
@@ -111,4 +113,5 @@ public class InventoryObject : ScriptableObject
             return amount;
         }
     }
+
 }

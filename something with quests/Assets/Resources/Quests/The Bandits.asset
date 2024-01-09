@@ -26,6 +26,7 @@ MonoBehaviour:
   isActive: 0
   isHandedIn: 0
   resetQuest: 1
+  questReward: {fileID: 0}
   enemyType: 1
   objectives:
   - description: Bandits killed

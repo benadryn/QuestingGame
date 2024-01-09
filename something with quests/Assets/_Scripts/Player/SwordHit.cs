@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SwordHit : MonoBehaviour
@@ -10,10 +11,16 @@ public class SwordHit : MonoBehaviour
     private BanditEnemy _banditEnemy;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource audioSource;
+    private AudioSource _swordHitAudioSource;
     [SerializeField] private AudioClip swordHitSfx;
+
+
+    private void Start()
+    {
+        _swordHitAudioSource = GetComponent<AudioSource>();
+    }
     
-    
+
     public void SendHitRaycast()
     {
         var transform1 = transform;
@@ -29,7 +36,7 @@ public class SwordHit : MonoBehaviour
             {
                 _banditEnemy.TakeDamage(damageAmount);
             }
-            audioSource.PlayOneShot(swordHitSfx);
+            _swordHitAudioSource.PlayOneShot(swordHitSfx);
         }
     }
 
@@ -44,7 +51,7 @@ public class SwordHit : MonoBehaviour
             {
                 banditEnemy.TakeDamage(damageAmount);
             }
-            audioSource.PlayOneShot(swordHitSfx);
+            _swordHitAudioSource.PlayOneShot(swordHitSfx);
 
         }
     }

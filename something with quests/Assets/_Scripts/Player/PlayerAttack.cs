@@ -33,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
     {
         _playerAnimator = GetComponent<Animator>();
         _playerControls = new PlayerControls();
-        swordHit.GetComponent<SwordHit>();
+        // swordHit.GetComponent<SwordHit>();
 
 
         _swordSwing = _playerControls.Player.Attacking;
@@ -44,18 +44,6 @@ public class PlayerAttack : MonoBehaviour
             if (!IsPointerOverUiNonAttackable("NonAttackableUi"))
             {
                 _attackStartTime = Time.time;
-
-                // if (ctx.ReadValue<float>() != 0 )
-                // { 
-                //     swordCollider.enabled = true;
-                //     // if (EventSystem.current.IsPointerOverGameObject()) return;
-                //     _playerAnimator.SetBool(IsAttacking, true);
-                //
-                //     if (!_playerAnimator.GetBool(IsRunning))
-                //     {
-                //         _playerMovement.RotateWhenAttacking();
-                //     }
-                // }
             }
         };
 
@@ -120,6 +108,8 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
          _playerMovement = PlayerMovement.Instance;
+         swordHit = GetComponentInChildren<SwordHit>();
+         swordCollider = swordHit.GetComponentInChildren<BoxCollider>();
 
     }
 
@@ -128,6 +118,12 @@ public class PlayerAttack : MonoBehaviour
         if (_isAttacking)
         {
             swordHit.SendHitRaycast();
+        }
+
+        if (!swordCollider || !swordHit)
+        {
+            swordHit = GetComponentInChildren<SwordHit>();
+            swordCollider = swordHit.GetComponentInChildren<BoxCollider>();
         }
     }
 

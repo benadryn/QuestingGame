@@ -12,6 +12,7 @@ TagManager:
   - 004
   - NonAttackableUi
   - Tooltip
+  - AttackingAudioSource
   layers:
   - Default
   - TransparentFX

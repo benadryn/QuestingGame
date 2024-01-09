@@ -1,23 +1,44 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DisplayInventory : MonoBehaviour
 {
+    public static DisplayInventory Instance;
+    
     [SerializeField]private GameObject inventoryPrefab;
     public InventoryObject inventory;
 
     [SerializeField] private GameObject tooltipPrefab;
     [SerializeField] private Transform canvasTransform;
+    [SerializeField] private Image inventoryPanel;
     private GameObject _activeTooltip;
+
+    private EquipManager _equipManager;
     
     private Dictionary<InventoryObject.InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventoryObject.InventorySlot, GameObject>();
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     void Start()
     {
         CreateDisplay();
+        _equipManager = EquipManager.Instance;
     }
     
     void Update()
@@ -36,7 +57,7 @@ public class DisplayInventory : MonoBehaviour
             }
             else
             {
-                var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
+                var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, inventoryPanel.transform);
                 obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite =
                     inventory.database.getItem[slot.item.Id].uiDisplay;
                 obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
@@ -49,7 +70,7 @@ public class DisplayInventory : MonoBehaviour
     {
         foreach (var slot in inventory.container.items)
         {
-            var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, transform);
+            var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, inventoryPanel.transform);
             obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite =
                 inventory.database.getItem[slot.item.Id].uiDisplay;
             obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
@@ -99,16 +120,36 @@ public class DisplayInventory : MonoBehaviour
     {
         if (slot.item.type == ItemType.Consumable)
         {
-            PlayerHealth.OnPotionUsed?.Invoke(slot.item.buffs[0].value);
+            PotionUse(slot);
+        }
 
-            int remainingAmount = inventory.RemoveItem(slot.item);
-            
-            if (remainingAmount <= 1 && itemsDisplayed.ContainsKey(slot))
+        if (slot.item.type == ItemType.Weapon)
+        {
+            Item oldWeapon = _equipManager.SwapWeapons(slot.item.weaponObject);
+            if (oldWeapon != null)
             {
-                Destroy(itemsDisplayed[slot]);
-                itemsDisplayed.Remove(slot);
-                tooltipPrefab.SetActive(false);
+                CheckRemainingInventory(slot);
+                inventory.AddItem(oldWeapon, 1);
             }
+        }
+    }
+
+    private void PotionUse(InventoryObject.InventorySlot slot)
+    {
+        PlayerHealth.OnPotionUsed?.Invoke(slot.item.buffs[0].value);
+
+        CheckRemainingInventory(slot);
+    }
+
+    private void CheckRemainingInventory(InventoryObject.InventorySlot slot)
+    {
+        int remainingAmount = inventory.RemoveItem(slot.item);
+
+        if (remainingAmount <= 1 && itemsDisplayed.ContainsKey(slot))
+        {
+            Destroy(itemsDisplayed[slot]);
+            itemsDisplayed.Remove(slot);
+            tooltipPrefab.SetActive(false);
         }
     }
 
