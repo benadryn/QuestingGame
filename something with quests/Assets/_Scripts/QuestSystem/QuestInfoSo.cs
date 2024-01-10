@@ -18,6 +18,7 @@ public class QuestInfoSo : ScriptableObject
    public bool isHandedIn;
    public bool resetQuest;
    public ItemObject questReward;
+   public int questRewardAmount = 1;
    public EnemyType enemyType;
    
    

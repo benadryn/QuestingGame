@@ -55,26 +55,26 @@ public class InventoryObject : ScriptableObject
 
 
 
-    [ContextMenu("Save")]
-    public void Save()
-    {
-        IFormatter formatter = new BinaryFormatter();
-        Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create,
-            FileAccess.Write);
-        formatter.Serialize(stream, container);
-        stream.Close();
-    }
-
-    [ContextMenu("Load")]
-    public void Load()
-    {
-        if (!File.Exists(string.Concat(Application.persistentDataPath, savePath))) return;
-        IFormatter formatter = new BinaryFormatter();
-        Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open,
-            FileAccess.Read);
-        container = (Inventory)formatter.Deserialize(stream);
-        stream.Close();
-    }
+    // [ContextMenu("Save")]
+    // public void Save()
+    // {
+    //     IFormatter formatter = new BinaryFormatter();
+    //     Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Create,
+    //         FileAccess.Write);
+    //     formatter.Serialize(stream, container);
+    //     stream.Close();
+    // }
+    //
+    // [ContextMenu("Load")]
+    // public void Load()
+    // {
+    //     if (!File.Exists(string.Concat(Application.persistentDataPath, savePath))) return;
+    //     IFormatter formatter = new BinaryFormatter();
+    //     Stream stream = new FileStream(string.Concat(Application.persistentDataPath, savePath), FileMode.Open,
+    //         FileAccess.Read);
+    //     container = (Inventory)formatter.Deserialize(stream);
+    //     stream.Close();
+    // }
 
     [ContextMenu("Clear")]
     public void Clear()

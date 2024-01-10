@@ -8,6 +8,10 @@ public class BanditDamage : MonoBehaviour
     [SerializeField] private Collider swordCollider;
     
     private bool _isAttackingSfx;
+    private Animator _animator;
+    
+    private static readonly int Damaged = Animator.StringToHash("Damaged");
+
     
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
@@ -17,15 +21,19 @@ public class BanditDamage : MonoBehaviour
     private void Awake()
     {
         swordCollider.enabled = false;
+        _animator = GetComponent<Animator>();
     }
 
     public void StartAttack()
     {
-        swordCollider.enabled = true;
-        if (!_isAttackingSfx)
+        if (!_animator.GetBool(Damaged))
         {
-            audioSource.PlayOneShot(swordSwingSfx);
-            audioSource.PlayOneShot(gruntSfx);
+            if (!_isAttackingSfx)
+            {
+                audioSource.PlayOneShot(swordSwingSfx);
+                audioSource.PlayOneShot(gruntSfx);
+            }
+            swordCollider.enabled = true;
         }
 
         _isAttackingSfx = true;

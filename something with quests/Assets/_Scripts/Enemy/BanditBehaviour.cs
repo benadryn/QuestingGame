@@ -28,6 +28,8 @@ public class BanditBehaviour : MonoBehaviour
     private static readonly int IsReturning = Animator.StringToHash("IsReturning");
     private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
     private static readonly int IsDead = Animator.StringToHash("isDead");
+    private static readonly int Damaged = Animator.StringToHash("Damaged");
+
 
 
     private void Awake()
@@ -77,7 +79,7 @@ public class BanditBehaviour : MonoBehaviour
         Vector3 targetPosition = _target.transform.position;
         _navMeshAgent.stoppingDistance = navMeshStoppingDistance;
         _navMeshAgent.SetDestination(targetPosition);
-        if ((targetPosition - transform.position).magnitude <= _navMeshAgent.stoppingDistance)
+        if ((targetPosition - transform.position).magnitude <= _navMeshAgent.stoppingDistance && !_animator.GetBool(Damaged))
         {
             AttackPlayer();
             StopMovingWhileAttacking();
@@ -100,7 +102,7 @@ public class BanditBehaviour : MonoBehaviour
         }
     }
     private void AttackPlayer()
-    {           
+    {
         _animator.SetBool(IsAttacking, true);
         _animator.SetBool(IsStill, true);
         _animator.SetBool(IsFollowing, false);

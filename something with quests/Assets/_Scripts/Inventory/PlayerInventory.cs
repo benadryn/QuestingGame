@@ -12,15 +12,15 @@ public class PlayerInventory : MonoBehaviour
         {
             inventory.Clear();
         }
-        inventory.Load();
+        // inventory.Load();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            inventory.Save();
-        }
+        // if (Input.GetKeyDown(KeyCode.K))
+        // {
+        //     inventory.Save();
+        // }
     }
 
     private void OnTriggerEnter(Collider other)

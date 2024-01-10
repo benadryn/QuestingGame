@@ -24,9 +24,10 @@ MonoBehaviour:
   isActive: 0
   isHandedIn: 0
   resetQuest: 1
-  questReward: {fileID: 11400000, guid: 2afe3e9b21d57b143a4e7f429f55034e, type: 2}
+  questReward: {fileID: 11400000, guid: 23c4bf5aa55c2ca4fabd0b507b6838e1, type: 2}
+  questRewardAmount: 2
   enemyType: 0
   objectives:
   - description: Swords Harvested
-    targetAmount: 1
+    targetAmount: 3
     currentAmount: 0

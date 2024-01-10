@@ -122,12 +122,8 @@ MonoBehaviour:
   layerToHit:
     serializedVersion: 2
     m_Bits: 128
-  damageAmount:
-    UseConstant: 0
-    ConstantValue: 0
-    Variable: {fileID: 11400000, guid: 639a9fc5a7797b74f8754ef0d1eeeaf3, type: 2}
+  damageMulti: 1
   maxDistance: 2
-  _swordHitAudioSource: {fileID: -3711379163113133086}
   swordHitSfx: {fileID: 8300000, guid: b4d8da4d8f7432640932c0347159b2dc, type: 3}
 --- !u!82 &-3711379163113133086
 AudioSource:

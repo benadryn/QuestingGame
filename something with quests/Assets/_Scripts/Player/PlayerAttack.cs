@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private FloatVariable swordDamage;
 
     [SerializeField] private float normalAttackDamage = 1.2f;
-    [SerializeField] private float heavyAttackDamage = 2.2f;
+    [SerializeField] private float heavyAttackDamageMulti = 1.5f;
     
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
@@ -33,7 +34,6 @@ public class PlayerAttack : MonoBehaviour
     {
         _playerAnimator = GetComponent<Animator>();
         _playerControls = new PlayerControls();
-        // swordHit.GetComponent<SwordHit>();
 
 
         _swordSwing = _playerControls.Player.Attacking;
@@ -73,14 +73,15 @@ public class PlayerAttack : MonoBehaviour
     {
         _playerAnimator.SetBool(IsHeavyAttacking, true);
         _playerAnimator.SetBool(IsAttacking, true);
-        swordDamage.Value = heavyAttackDamage;
+        swordDamage.Value *= heavyAttackDamageMulti;
 
     }
 
     private void NormalAttack()
     {
         _playerAnimator.SetBool(IsAttacking, true);
-        swordDamage.Value = normalAttackDamage;
+        swordDamage.Value *= normalAttackDamage;
+
     }
     
 
@@ -117,7 +118,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (_isAttacking)
         {
-            swordHit.SendHitRaycast();
+            swordHit.SendHitRaycast(swordDamage.Value);
         }
 
         if (!swordCollider || !swordHit)
@@ -156,6 +157,8 @@ public class PlayerAttack : MonoBehaviour
         _isAttacking = false;
         _playerAnimator.SetBool(IsHeavyAttacking, false);
         _playerAnimator.SetBool(IsAttacking, false);
+        swordDamage.Value = normalAttackDamage;
         swordHit.ResetIsHit();
+        
     }
 }

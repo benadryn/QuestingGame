@@ -25,7 +25,8 @@ MonoBehaviour:
   isActive: 0
   isHandedIn: 0
   resetQuest: 1
-  questReward: {fileID: 0}
+  questReward: {fileID: 11400000, guid: 2afe3e9b21d57b143a4e7f429f55034e, type: 2}
+  questRewardAmount: 1
   enemyType: 2
   objectives:
   - description: Kill Bandit Keith

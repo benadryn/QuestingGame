@@ -4,8 +4,9 @@ using UnityEngine;
 public class SwordHit : MonoBehaviour
 {
     [SerializeField] private LayerMask layerToHit;
-    [SerializeField] private FloatReference damageAmount;
+    [SerializeField] private float damageMulti;
     [SerializeField] private float maxDistance = 2.0f;
+    private float _damage;
     private bool _isHit;
 
     private BanditEnemy _banditEnemy;
@@ -21,8 +22,9 @@ public class SwordHit : MonoBehaviour
     }
     
 
-    public void SendHitRaycast()
+    public void SendHitRaycast(float damageAmount)
     {
+        _damage = damageAmount * damageMulti;
         var transform1 = transform;
         var forward = transform1.forward;
         Debug.DrawRay(transform1.position, forward, Color.white, 3.0f, true);
@@ -34,7 +36,7 @@ public class SwordHit : MonoBehaviour
 
             if (_banditEnemy != null)
             {
-                _banditEnemy.TakeDamage(damageAmount);
+                _banditEnemy.TakeDamage(_damage);
             }
             _swordHitAudioSource.PlayOneShot(swordHitSfx);
         }
@@ -49,7 +51,7 @@ public class SwordHit : MonoBehaviour
     
             if (banditEnemy != null)
             {
-                banditEnemy.TakeDamage(damageAmount);
+                banditEnemy.TakeDamage(_damage);
             }
             _swordHitAudioSource.PlayOneShot(swordHitSfx);
 

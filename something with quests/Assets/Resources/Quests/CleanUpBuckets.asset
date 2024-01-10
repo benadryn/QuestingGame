@@ -26,6 +26,7 @@ MonoBehaviour:
   isHandedIn: 0
   resetQuest: 1
   questReward: {fileID: 0}
+  questRewardAmount: 0
   enemyType: 0
   objectives:
   - description: Worm Buckets cleaned

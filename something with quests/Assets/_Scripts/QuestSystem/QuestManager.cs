@@ -30,11 +30,6 @@ public class QuestManager : MonoBehaviour
     {
         _uiManager = UiManager.instance;
         _displayInventory = DisplayInventory.Instance;
-
-        if (!_displayInventory)
-        {
-            Debug.Log("display inventory is null");
-        }
     }
     
 
@@ -133,8 +128,7 @@ public class QuestManager : MonoBehaviour
         if (quest.questReward)
         {
             Item questItem = quest.questReward.CreateItem();
-            Debug.Log(questItem);
-            _displayInventory.inventory.AddItem(questItem, 1);
+            _displayInventory.inventory.AddItem(questItem, quest.questRewardAmount);
         }
         RemoveSideQuestDetails();
     }
