@@ -13,6 +13,7 @@ TagManager:
   - NonAttackableUi
   - Tooltip
   - AttackingAudioSource
+  - BagSlot
   layers:
   - Default
   - TransparentFX

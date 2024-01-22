@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.Serialization;
 
 
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
@@ -33,8 +34,9 @@ public class InventoryObject : ScriptableObject
 
     public int RemoveItem(Item _item)
     {
-        foreach (var inventorySlot in container.items)
+        for (int i = 0; i < container.items.Count; i++)
         {
+            var inventorySlot = container.items[i];
             if (inventorySlot.item == _item)
             {
                 if (inventorySlot.amount > 1)
@@ -42,16 +44,30 @@ public class InventoryObject : ScriptableObject
                     inventorySlot.RemoveAmount(1);
                     return inventorySlot.amount;
                 }
-                else
-                {
-                    container.items.Remove(inventorySlot);
-                    return inventorySlot.amount;
-                }
+                
+                container.items.RemoveAt(i);
+                return 0;
             }
         }
+        
+        // foreach (var inventorySlot in container.items)
+        // {
+        //     if (inventorySlot.item == _item)
+        //     {
+        //         if (inventorySlot.amount > 1)
+        //         {
+        //             inventorySlot.RemoveAmount(1);
+        //             return inventorySlot.amount;
+        //         }
+        //
+        //         container.items.Remove(inventorySlot);
+        //     }
+        // }
 
         return -1;
     }
+
+   
 
 
 
@@ -101,7 +117,6 @@ public class InventoryObject : ScriptableObject
             item = _item;
             amount = _amount;
         }
-
         public void AddAmount(int value)
         {
             amount += value;

@@ -153,6 +153,7 @@ public class PlayerAttack : MonoBehaviour
     }
     private void StopAttack()
     {
+        if(!swordCollider) return;
         swordCollider.enabled = false;
         _isAttacking = false;
         _playerAnimator.SetBool(IsHeavyAttacking, false);

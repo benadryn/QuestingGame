@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Of Light
   m_EditorClassIdentifier: 
   id: 2
-  uiDisplay: {fileID: 21300000, guid: 719c2201c2f5f6c4aafffaeb5abdf5f9, type: 3}
+  uiDisplay: {fileID: 21300000, guid: d31aa8412a4d374458c912d11686642a, type: 3}
   type: 1
   description: The Light of this sword will melt your oponents
   buffs:

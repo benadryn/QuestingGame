@@ -23,13 +23,13 @@ public class PlayerInventory : MonoBehaviour
         // }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var item = other.GetComponent<ItemToPickUp>();
-        if (item)
-        {
-            inventory.AddItem(new Item(item.item), 1);
-            Destroy(other.gameObject);
-        }
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     var item = other.GetComponent<ItemToPickUp>();
+    //     if (item)
+    //     {
+    //         inventory.AddItem(new Item(item.item), 1);
+    //         Destroy(other.gameObject);
+    //     }
+    // }
 }

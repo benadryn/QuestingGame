@@ -129,6 +129,7 @@ public class QuestManager : MonoBehaviour
         {
             Item questItem = quest.questReward.CreateItem();
             _displayInventory.inventory.AddItem(questItem, quest.questRewardAmount);
+            DisplayInventory.Instance.UpdateDisplay();
         }
         RemoveSideQuestDetails();
     }

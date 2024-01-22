@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class DisplayInventory : MonoBehaviour
@@ -14,13 +13,29 @@ public class DisplayInventory : MonoBehaviour
     public InventoryObject inventory;
 
     [SerializeField] private GameObject tooltipPrefab;
-    [SerializeField] private Transform canvasTransform;
-    [SerializeField] private Image inventoryPanel;
     private GameObject _activeTooltip;
 
     private EquipManager _equipManager;
+    private bool _isDragging = false;
     
-    private Dictionary<InventoryObject.InventorySlot, GameObject> itemsDisplayed = new Dictionary<InventoryObject.InventorySlot, GameObject>();
+    private Dictionary<InventoryObject.InventorySlot, GameObject> _itemsDisplayed = new Dictionary<InventoryObject.InventorySlot, GameObject>();
+
+
+    private void OnEnable()
+    {
+        Draggable.OnDraggingStateChanged += HandleDraggingStateChange;
+    }
+    
+    private void OnDisable()
+    {
+        Draggable.OnDraggingStateChanged -= HandleDraggingStateChange;
+    }
+
+    private void HandleDraggingStateChange(bool isDragging)
+    {
+        _isDragging = isDragging;
+        SetRaycastTargets(!_isDragging);
+    }
 
 
     private void Awake()
@@ -37,47 +52,75 @@ public class DisplayInventory : MonoBehaviour
 
     void Start()
     {
-        CreateDisplay();
         _equipManager = EquipManager.Instance;
+        CreateDisplay();
+
     }
     
-    void Update()
-    {
-        UpdateDisplay();
-    }
 
     public void UpdateDisplay()
     {
         foreach (var slot in inventory.container.items)
         {
-            if (itemsDisplayed.ContainsKey(slot))
+            if (_itemsDisplayed.ContainsKey(slot))
             {
-                itemsDisplayed[slot].GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
-                AddEvent(itemsDisplayed[slot], slot);
+                _itemsDisplayed[slot].GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
+                AddEvent(_itemsDisplayed[slot], slot);
             }
             else
             {
-                var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, inventoryPanel.transform);
-                obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite =
-                    inventory.database.getItem[slot.item.Id].uiDisplay;
-                obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
-                itemsDisplayed.Add(slot, obj);
+                    CreateInventoryItemInBag(slot);
             }
         }
     }
+
+    private void SetRaycastTargets(bool value)
+    {
+        foreach (var itemDisplayed in _itemsDisplayed.Values)
+        {
+            var image = itemDisplayed.GetComponent<Image>();
+            if (image != null)
+            {
+                image.raycastTarget = value;
+            }
+        }
+    }
+
+    private static Transform FindEmptyInventorySlot()
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("BagSlot");
+        
+        Array.Sort(objectsWithTag, (a, b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
+        
+        foreach (var bagSlot in objectsWithTag)
+        {
+            if (bagSlot.transform.childCount <= 0)
+            {
+                return bagSlot.transform;
+            }
+        }
+
+        return null;
+    }
     
-    public void CreateDisplay()
+    private void CreateDisplay()
     {
         foreach (var slot in inventory.container.items)
         {
-            var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, inventoryPanel.transform);
-            obj.transform.GetChild(0).GetComponentInChildren<Image>().sprite =
+            CreateInventoryItemInBag(slot);
+        }
+    }
+
+    private void CreateInventoryItemInBag(InventoryObject.InventorySlot slot)
+    {
+            
+            var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, FindEmptyInventorySlot());
+            obj.transform.GetComponent<Image>().sprite =
                 inventory.database.getItem[slot.item.Id].uiDisplay;
             obj.GetComponentInChildren<TextMeshProUGUI>().text = slot.amount.ToString("n0");
-            
+
             AddEvent(obj, slot);
-            itemsDisplayed.Add(slot, obj);
-        }
+            _itemsDisplayed.Add(slot, obj);
     }
 
     private void AddEvent(GameObject obj, InventoryObject.InventorySlot slot)
@@ -114,22 +157,25 @@ public class DisplayInventory : MonoBehaviour
             entryClick.callback.AddListener((data) => { OnPointerClickItem(slot);});
             trigger.triggers.Add(entryClick);
         }
+        
     }
+    
 
     private void OnPointerClickItem(InventoryObject.InventorySlot slot)
     {
-        if (slot.item.type == ItemType.Consumable)
+        if (!_isDragging)
         {
-            PotionUse(slot);
-        }
-
-        if (slot.item.type == ItemType.Weapon)
-        {
-            Item oldWeapon = _equipManager.SwapWeapons(slot.item.weaponObject);
-            if (oldWeapon != null)
+            
+            if (slot.item.type == ItemType.Consumable)
             {
+                PotionUse(slot);
+            }
+
+            if (slot.item.type == ItemType.Weapon)
+            {
+                _equipManager.SwapWeapons(slot.item.weaponObject);
                 CheckRemainingInventory(slot);
-                inventory.AddItem(oldWeapon, 1);
+            
             }
         }
     }
@@ -144,19 +190,19 @@ public class DisplayInventory : MonoBehaviour
     private void CheckRemainingInventory(InventoryObject.InventorySlot slot)
     {
         int remainingAmount = inventory.RemoveItem(slot.item);
-
-        if (remainingAmount <= 1 && itemsDisplayed.ContainsKey(slot))
+        if (remainingAmount <= 0 && _itemsDisplayed.ContainsKey(slot))
         {
-            Destroy(itemsDisplayed[slot]);
-            itemsDisplayed.Remove(slot);
+            Destroy(_itemsDisplayed[slot]);
+            _itemsDisplayed.Remove(slot);
             tooltipPrefab.SetActive(false);
         }
+        UpdateDisplay();
     }
 
 
     private void OnPointerEnterTooltip(InventoryObject.InventorySlot slot)
     {
-        if (tooltipPrefab && !tooltipPrefab.activeSelf)
+        if (tooltipPrefab && !tooltipPrefab.activeSelf && !_isDragging)
         {
             tooltipPrefab.SetActive(true);
 
@@ -168,6 +214,8 @@ public class DisplayInventory : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             tooltipRect.position = new Vector3(mousePos.x - 100f, mousePos.y + 200f, 0f);
         }
+
+        
     }
 
     private string GetStatsText(InventoryObject.InventorySlot slot)
@@ -185,6 +233,15 @@ public class DisplayInventory : MonoBehaviour
     {
         tooltipPrefab.SetActive(false);
     }
+
+    public void CheckBagStatus(bool isBagClosed)
+    {
+        if (isBagClosed)
+        {
+            OnPointerExitTooltip();
+        }
+    }
+    
     
    
 }

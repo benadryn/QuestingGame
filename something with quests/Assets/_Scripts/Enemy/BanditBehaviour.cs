@@ -88,7 +88,6 @@ public class BanditBehaviour : MonoBehaviour
         else
         {
             StopAttacking();
-
         }
     }
     private void StopFollowingPlayer()
@@ -146,7 +145,6 @@ public class BanditBehaviour : MonoBehaviour
 
         if (toPlayer.magnitude <= playerDetectionRadius)
         {
-            
             return _playerMovement;
         }
         else

@@ -1,14 +1,20 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class EquipManager : MonoBehaviour
 {
     public static EquipManager Instance;
     
     [SerializeField] private GameObject playerHand;
-    [SerializeField] private WeaponObject weaponObject;
-    private Item _oldWeapon;
+    [SerializeField] private WeaponObject startingWeapon;
+    private WeaponObject _currentWeaponObject;
     private GameObject _currentWeapon;
+    private Item _currentWeaponItem;
+    [SerializeField] private Animator animator;
+    
+    public InventoryObject inventory;
+    
+    private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
+    private static readonly int IsHeavyAttacking = Animator.StringToHash("isHeavyAttacking");
 
     private void Awake()
     {
@@ -22,24 +28,49 @@ public class EquipManager : MonoBehaviour
             return;
         }
         
-        _currentWeapon = Instantiate(weaponObject.weaponPrefab, playerHand.transform.position, Quaternion.identity);
-        
-        _currentWeapon.transform.SetParent(playerHand.transform);
+        EquipWeapon(startingWeapon);
     }
 
 
-    public Item SwapWeapons(WeaponObject newWeapon)
+    public void EquipWeapon(WeaponObject newWeapon)
     {
-        _oldWeapon = weaponObject.CreateItem();
-        weaponObject = newWeapon;
-        Destroy(_currentWeapon);
+        if (!animator.GetBool(IsAttacking) || !animator.GetBool(IsHeavyAttacking))
+        {
+            
         
-        _currentWeapon = Instantiate(weaponObject.weaponPrefab , playerHand.transform.position, Quaternion.identity);
+            // Remove old Weapon from inv and get it as item
+            if (_currentWeaponObject)
+            {
+                inventory.RemoveItem(_currentWeaponItem);
+                Destroy(_currentWeapon);
+            }
         
-        _currentWeapon.transform.SetParent(playerHand.transform);
-        _currentWeapon.transform.localRotation = Quaternion.identity;
+            // Set New Weapon
+            _currentWeaponObject = newWeapon;
+        
+            // Instantiate the new weapon
+            _currentWeapon = Instantiate(_currentWeaponObject.weaponPrefab, playerHand.transform.position, Quaternion.identity);
+            _currentWeapon.transform.SetParent(playerHand.transform);
+            _currentWeapon.transform.localRotation = Quaternion.identity;
+        
+            // Create an item instance for new weapon
+            _currentWeaponItem = _currentWeaponObject.CreateItem();
+        }
+    }
 
-        return _oldWeapon;
+    public void SwapWeapons(WeaponObject newWeapon)
+    {
+        // save current weapon as item
+        Item oldWeapon = _currentWeaponItem;
+        
+        // equip the new weapon
+        EquipWeapon(newWeapon);
+        
+        // if old weapon add to inventory
+        if (oldWeapon != null)
+        {
+            inventory.AddItem(oldWeapon, 1);
+        }
     }
     
 }

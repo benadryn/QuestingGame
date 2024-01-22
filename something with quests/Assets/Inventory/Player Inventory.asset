@@ -20,19 +20,23 @@ MonoBehaviour:
       item:
         name: Small Healing Potion
         Id: 1
-        description: Healing Potion
+        description: Heals Player for 5hp
         type: 0
         buffs:
         - attribute: 2
           value: 5
+        weaponObject: {fileID: 0}
       amount: 2
-    - id: 0
+    - id: 2
       item:
-        name: Helm of the unicorn
-        Id: 0
-        description: This is a very rare helmet. Don't underestimate it
-        type: 2
+        name: Sword Of Light
+        Id: 2
+        description: The Light of this sword will melt your oponents
+        type: 1
         buffs:
+        - attribute: 0
+          value: 3
         - attribute: 1
-          value: 2
+          value: 6
+        weaponObject: {fileID: 11400000, guid: 2afe3e9b21d57b143a4e7f429f55034e, type: 2}
       amount: 1

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 004
   questName: Harvest Swords
   levelRequired: 0
-  experience: 69
+  experience: 70
   description: The swords are lovely this time of year, but my back has been aching.
     Will you please harvest them for me.
   completedDescription: thanks bitch
@@ -29,5 +29,5 @@ MonoBehaviour:
   enemyType: 0
   objectives:
   - description: Swords Harvested
-    targetAmount: 3
+    targetAmount: 1
     currentAmount: 0

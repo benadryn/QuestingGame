@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Helm of the unicorn
   m_EditorClassIdentifier: 
   id: 0
-  uiDisplay: {fileID: 21300000, guid: d659f7396cd57754eba78763cf986c51, type: 3}
+  uiDisplay: {fileID: 21300000, guid: 3253ad9deab97584d9f92d6a2fad17b4, type: 3}
   type: 2
   description: This is a very rare helmet. Don't underestimate it
   buffs:
   - attribute: 1
     value: 2
+  weaponObject: {fileID: 0}

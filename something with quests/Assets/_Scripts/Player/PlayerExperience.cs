@@ -66,9 +66,14 @@ public class PlayerExperience : MonoBehaviour
         PlayerHealth.AddHpOnLevel?.Invoke();
         _currentXp -= _xpToLevel;
         _level++;
+        GetXpToLevel();
+        if (_currentXp > _xpToLevel)
+        {
+            LevelUp();
+            return;
+        }
         levelUpParticle.Play();
         StartCoroutine(StopLevelUpParticle());
-        GetXpToLevel();
         audioSource.PlayOneShot(levelUpSfx);
     }
 
