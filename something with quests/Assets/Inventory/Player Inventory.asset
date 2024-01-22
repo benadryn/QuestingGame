@@ -12,16 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d137767e22612de4187215741e056425, type: 3}
   m_Name: Player Inventory
   m_EditorClassIdentifier: 
-  savePath: /Inventory
   database: {fileID: 11400000, guid: 27d57c3c10e0b6047b9bb4d4d0362dd7, type: 2}
   container:
-    items:
-    - id: 3
-      item:
-        name: Start Sword
-        Id: 3
-        description: This is the crappy sword you spawned in with goodluck.
-        type: 1
-        buffs: []
-        weaponObject: {fileID: 11400000, guid: 43990c56cd42f6a4db3b032776864358, type: 2}
-      amount: 1
+    items: []

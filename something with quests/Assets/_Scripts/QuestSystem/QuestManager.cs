@@ -9,9 +9,10 @@ public class QuestManager : MonoBehaviour
     private DisplayInventory _displayInventory;
     public List<QuestInfoSo> activeQuests = new List<QuestInfoSo>();
     public List<QuestInfoSo> completedQuests = new List<QuestInfoSo>();
-    [SerializeField] private TextMeshProUGUI questDetailSide;
     public bool questShowingOnUi;
 
+    [SerializeField] private TextMeshProUGUI questDetailSide;
+    
     [Header("Audio")] 
     [SerializeField] private AudioSource audioSource;
 

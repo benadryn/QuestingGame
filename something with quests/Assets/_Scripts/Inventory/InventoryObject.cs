@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject
 {
-    public string savePath;
+    // public string savePath;
     public ItemDataBaseObject database;
     public Inventory container;
 
@@ -49,27 +49,10 @@ public class InventoryObject : ScriptableObject
                 return 0;
             }
         }
-        
-        // foreach (var inventorySlot in container.items)
-        // {
-        //     if (inventorySlot.item == _item)
-        //     {
-        //         if (inventorySlot.amount > 1)
-        //         {
-        //             inventorySlot.RemoveAmount(1);
-        //             return inventorySlot.amount;
-        //         }
-        //
-        //         container.items.Remove(inventorySlot);
-        //     }
-        // }
 
         return -1;
     }
-
-   
-
-
+    
 
     // [ContextMenu("Save")]
     // public void Save()

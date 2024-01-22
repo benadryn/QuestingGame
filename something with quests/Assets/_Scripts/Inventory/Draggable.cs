@@ -21,12 +21,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         var parent = transform.parent;
         // this will stay the same to swap old item with new item
         parentBeforeDrag = parent;
-        // this will change within inventoryspot
+        // this will change within inventory spot
         parentAfterDrag = parent;
         
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
-        // _image.raycastTarget = false;
         
         OnDraggingStateChanged?.Invoke(true); 
     }
@@ -39,7 +38,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnEndDrag(PointerEventData eventData)
     {
         transform.SetParent(parentAfterDrag);
-        // _image.raycastTarget = true;
         
         OnDraggingStateChanged?.Invoke(false); 
     }

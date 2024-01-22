@@ -7,8 +7,8 @@ public class ToggleInventory : MonoBehaviour
     private PlayerControls _playerControls;
     private InputAction _toggleInventory;
     private DisplayInventory _displayInventory;
-    [SerializeField] private Image bagIcon;
 
+    [SerializeField] private Image bagIcon;
     [SerializeField] private Canvas inventoryUI;
 
     private void Awake()

@@ -6,10 +6,11 @@ public class EquipManager : MonoBehaviour
     
     [SerializeField] private GameObject playerHand;
     [SerializeField] private WeaponObject startingWeapon;
+    [SerializeField] private Animator animator;
+    
     private WeaponObject _currentWeaponObject;
     private GameObject _currentWeapon;
     private Item _currentWeaponItem;
-    [SerializeField] private Animator animator;
     
     public InventoryObject inventory;
     

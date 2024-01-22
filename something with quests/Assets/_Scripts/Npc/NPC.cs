@@ -5,9 +5,12 @@ using UnityEngine;
 public class NPC : MonoBehaviour, IInteractable
 {
     [SerializeField] private List<QuestInfoSo> quests = new List<QuestInfoSo>();
-    private QuestManager _questManager;
-    private IInteractable _interactableImplementation;
     [SerializeField] private NpcQuestMarker npcQuestMarker;
+    
+    private QuestManager _questManager;
+    
+    private IInteractable _interactableImplementation;
+    
     private bool _hasUnacceptedQuests;
     private bool _hasFinishedQuests;
 

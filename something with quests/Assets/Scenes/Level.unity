@@ -5079,7 +5079,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 824615366}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -5586,8 +5586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa6c594b253a2b439f35260b7b799d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPrefab: {fileID: 4196333677593260823, guid: c9a5176a5020e3a4fac35fcb13e4e003, type: 3}
   inventory: {fileID: 11400000, guid: fdd4b9cf5bee8e64d9530f3e83413d2d, type: 2}
+  inventoryPrefab: {fileID: 4196333677593260823, guid: c9a5176a5020e3a4fac35fcb13e4e003, type: 3}
   tooltipPrefab: {fileID: 637924417}
   inventoryUsedSlotAmountText: {fileID: 1581489651}
 --- !u!1 &894730665
@@ -9336,8 +9336,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeQuests: []
   completedQuests: []
-  questDetailSide: {fileID: 1251171534}
   questShowingOnUi: 0
+  questDetailSide: {fileID: 1251171534}
   audioSource: {fileID: 1506016057}
   acceptQuestAudio: {fileID: 8300000, guid: 791e7cda0ba0a4b4ead9d42ba8718522, type: 3}
   completeQuestAudio: {fileID: 8300000, guid: f58f7d32bbc2013468651acbc18106e6, type: 3}

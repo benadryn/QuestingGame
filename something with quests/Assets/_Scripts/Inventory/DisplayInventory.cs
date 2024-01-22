@@ -9,20 +9,22 @@ public class DisplayInventory : MonoBehaviour
 {
     public static DisplayInventory Instance;
     
-    [SerializeField]private GameObject inventoryPrefab;
     public InventoryObject inventory;
 
+    [SerializeField]private GameObject inventoryPrefab;
     [SerializeField] private GameObject tooltipPrefab;
-    private GameObject _activeTooltip;
+    [SerializeField] private TextMeshProUGUI inventoryUsedSlotAmountText;
 
     private EquipManager _equipManager;
-    private bool _isDragging = false;
 
+    private GameObject _activeTooltip;
     private GameObject[] _objectsWithTag;
-    [SerializeField] private TextMeshProUGUI inventoryUsedSlotAmountText;
+    
     private int _fullSlot = 0;
     private int _totalSlots = 0;
+    
     private bool _isBagClosed = true;
+    private bool _isDragging = false;
     
     private Dictionary<InventoryObject.InventorySlot, GameObject> _itemsDisplayed = new Dictionary<InventoryObject.InventorySlot, GameObject>();
 
