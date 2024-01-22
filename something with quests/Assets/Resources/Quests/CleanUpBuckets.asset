@@ -30,5 +30,5 @@ MonoBehaviour:
   enemyType: 0
   objectives:
   - description: Worm Buckets cleaned
-    targetAmount: 1
+    targetAmount: 5
     currentAmount: 0

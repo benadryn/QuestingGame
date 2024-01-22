@@ -28,7 +28,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     private void Update()
     {
-            SetQuestFloater();
+        SetQuestFloater();
     }
     
     

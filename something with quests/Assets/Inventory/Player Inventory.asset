@@ -16,27 +16,12 @@ MonoBehaviour:
   database: {fileID: 11400000, guid: 27d57c3c10e0b6047b9bb4d4d0362dd7, type: 2}
   container:
     items:
-    - id: 1
+    - id: 3
       item:
-        name: Small Healing Potion
-        Id: 1
-        description: Heals Player for 5hp
-        type: 0
-        buffs:
-        - attribute: 2
-          value: 5
-        weaponObject: {fileID: 0}
-      amount: 2
-    - id: 2
-      item:
-        name: Sword Of Light
-        Id: 2
-        description: The Light of this sword will melt your oponents
+        name: Start Sword
+        Id: 3
+        description: This is the crappy sword you spawned in with goodluck.
         type: 1
-        buffs:
-        - attribute: 0
-          value: 3
-        - attribute: 1
-          value: 6
-        weaponObject: {fileID: 11400000, guid: 2afe3e9b21d57b143a4e7f429f55034e, type: 2}
+        buffs: []
+        weaponObject: {fileID: 11400000, guid: 43990c56cd42f6a4db3b032776864358, type: 2}
       amount: 1

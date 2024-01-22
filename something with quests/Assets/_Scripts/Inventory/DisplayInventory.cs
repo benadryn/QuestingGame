@@ -17,6 +17,12 @@ public class DisplayInventory : MonoBehaviour
 
     private EquipManager _equipManager;
     private bool _isDragging = false;
+
+    private GameObject[] _objectsWithTag;
+    [SerializeField] private TextMeshProUGUI inventoryUsedSlotAmountText;
+    private int _fullSlot = 0;
+    private int _totalSlots = 0;
+    private bool _isBagClosed = true;
     
     private Dictionary<InventoryObject.InventorySlot, GameObject> _itemsDisplayed = new Dictionary<InventoryObject.InventorySlot, GameObject>();
 
@@ -53,10 +59,30 @@ public class DisplayInventory : MonoBehaviour
     void Start()
     {
         _equipManager = EquipManager.Instance;
+        SortBagSpots();
         CreateDisplay();
 
     }
-    
+
+    private void SortBagSpots()
+    {
+        _objectsWithTag = GameObject.FindGameObjectsWithTag("BagSlot");
+
+        Array.Sort(_objectsWithTag, (a, b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
+
+ 
+        foreach (var slot in _objectsWithTag)
+        {
+            _totalSlots++;
+            if (slot.transform.childCount > 0)
+            {
+                _fullSlot++;
+            }
+        }
+        inventoryUsedSlotAmountText.text = $"{_fullSlot}/{_totalSlots}";
+
+    }
+
 
     public void UpdateDisplay()
     {
@@ -70,8 +96,11 @@ public class DisplayInventory : MonoBehaviour
             else
             {
                     CreateInventoryItemInBag(slot);
+                    DisableInventoryWithItems(_isBagClosed);
             }
         }
+        inventoryUsedSlotAmountText.text = $"{_fullSlot}/{_totalSlots}";
+
     }
 
     private void SetRaycastTargets(bool value)
@@ -86,13 +115,9 @@ public class DisplayInventory : MonoBehaviour
         }
     }
 
-    private static Transform FindEmptyInventorySlot()
+    private Transform FindEmptyInventorySlot()
     {
-        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("BagSlot");
-        
-        Array.Sort(objectsWithTag, (a, b) => a.transform.GetSiblingIndex().CompareTo(b.transform.GetSiblingIndex()));
-        
-        foreach (var bagSlot in objectsWithTag)
+        foreach (var bagSlot in _objectsWithTag)
         {
             if (bagSlot.transform.childCount <= 0)
             {
@@ -109,11 +134,12 @@ public class DisplayInventory : MonoBehaviour
         {
             CreateInventoryItemInBag(slot);
         }
+
     }
 
     private void CreateInventoryItemInBag(InventoryObject.InventorySlot slot)
     {
-            
+            _fullSlot++;
             var obj = Instantiate(inventoryPrefab, Vector3.zero, Quaternion.identity, FindEmptyInventorySlot());
             obj.transform.GetComponent<Image>().sprite =
                 inventory.database.getItem[slot.item.Id].uiDisplay;
@@ -195,6 +221,7 @@ public class DisplayInventory : MonoBehaviour
             Destroy(_itemsDisplayed[slot]);
             _itemsDisplayed.Remove(slot);
             tooltipPrefab.SetActive(false);
+            _fullSlot--;
         }
         UpdateDisplay();
     }
@@ -236,12 +263,22 @@ public class DisplayInventory : MonoBehaviour
 
     public void CheckBagStatus(bool isBagClosed)
     {
-        if (isBagClosed)
+        _isBagClosed = isBagClosed;
+        if (_isBagClosed)
         {
             OnPointerExitTooltip();
         }
+        DisableInventoryWithItems(isBagClosed);
     }
-    
-    
-   
+
+    private void DisableInventoryWithItems(bool isBagClosed)
+    {
+        foreach (var slot in _objectsWithTag)
+        {
+            if (slot.transform.childCount >= 1)
+            {
+                slot.gameObject.SetActive(!isBagClosed);
+            }
+        }
+    }
 }

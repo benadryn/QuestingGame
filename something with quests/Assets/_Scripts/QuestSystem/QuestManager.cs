@@ -12,6 +12,12 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questDetailSide;
     public bool questShowingOnUi;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private AudioClip acceptQuestAudio;
+    [SerializeField] private AudioClip completeQuestAudio;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -50,6 +56,7 @@ public class QuestManager : MonoBehaviour
             activeQuests.Add(quest);
             UpdateSideQuestDetails(activeQuests);
             questShowingOnUi = false;
+            audioSource.PlayOneShot(acceptQuestAudio);
         }
         
     }
@@ -120,6 +127,7 @@ public class QuestManager : MonoBehaviour
         {
             PlayerExperience.XpGain?.Invoke(quest.experience);
             NPC.PlayGoodbyeSfx?.Invoke();
+            audioSource.PlayOneShot(completeQuestAudio);
         }
         quest.isActive = false;
         quest.isHandedIn = true;

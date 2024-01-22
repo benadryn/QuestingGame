@@ -29,5 +29,5 @@ MonoBehaviour:
   enemyType: 0
   objectives:
   - description: Swords Harvested
-    targetAmount: 1
+    targetAmount: 3
     currentAmount: 0

@@ -7,7 +7,6 @@ public class InventorySpot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         _draggedItem = eventData.pointerDrag;
-        Debug.Log(_draggedItem.name);
         if (_draggedItem != null)
         {
             Draggable draggableComponent = _draggedItem.GetComponent<Draggable>();
