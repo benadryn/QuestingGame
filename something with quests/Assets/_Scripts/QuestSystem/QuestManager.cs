@@ -108,6 +108,7 @@ public class QuestManager : MonoBehaviour
 
             if (objective.currentAmount >= objective.targetAmount)
             {
+                
                 CompleteQuest(quest);
             }
         }
@@ -169,5 +170,6 @@ public class QuestManager : MonoBehaviour
     {
         UpdateSideQuestDetails(activeQuests);
     }
+    
     
 }

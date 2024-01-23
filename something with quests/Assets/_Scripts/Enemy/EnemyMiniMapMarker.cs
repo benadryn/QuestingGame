@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class EnemyMiniMapMarker : MonoBehaviour
     private string _id;
     private QuestManager _questManager;
     [SerializeField] private Image minimapImage;
+    private bool _questObjectiveFinished;
 
     private bool _isDead;
 
@@ -17,24 +19,20 @@ public class EnemyMiniMapMarker : MonoBehaviour
 
     private void Update()
     {
-        if (_isDead) return;
-        foreach (var quest in _questManager.activeQuests)
+        if (_isDead || _questManager.activeQuests.All(quest => quest.id != _id || quest.isCompleted))
         {
-            if (quest.id == _id)
-            {
-                minimapImage.gameObject.SetActive(true);
-            }
-            else
-            {
-                minimapImage.gameObject.SetActive(false);
-            }
+            minimapImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            minimapImage.gameObject.SetActive(true);
         }
     }
 
     public void RemoveMiniMapImage()
     {
-        Debug.Log("hello");
-        minimapImage.gameObject.SetActive(false);
         _isDead = true;
     }
+
+  
 }

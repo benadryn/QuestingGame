@@ -31,5 +31,5 @@ MonoBehaviour:
   enemyType: 1
   objectives:
   - description: Bandits killed
-    targetAmount: 5
+    targetAmount: 1
     currentAmount: 0

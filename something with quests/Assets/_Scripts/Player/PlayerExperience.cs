@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PlayerExperience : MonoBehaviour
@@ -11,7 +12,7 @@ public class PlayerExperience : MonoBehaviour
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private ParticleSystem levelUpParticle;
-    private float _level = 1.0f;
+    [SerializeField] private FloatVariable level;
     private int _xpToLevel;
     private int _currentXp;
 
@@ -39,7 +40,7 @@ public class PlayerExperience : MonoBehaviour
 
     private void GetXpToLevel()
     {
-        _xpToLevel = Mathf.RoundToInt(_level * 100.0f * 1.25f);
+        _xpToLevel = Mathf.RoundToInt(level.Value * 100.0f * 1.25f);
     }
     
     private void UpdateXpText()
@@ -47,13 +48,13 @@ public class PlayerExperience : MonoBehaviour
         xpSlider.maxValue = _xpToLevel;
         xpSlider.value = _currentXp;
         xpText.text = $"{_currentXp}/{_xpToLevel}";
-        levelText.text = $"{Mathf.RoundToInt(_level)}";
+        levelText.text = $"{Mathf.RoundToInt(level.Value)}";
     }
     
     
     private void AddXpToCharacter(int xpAmount)
     {
-        _currentXp += Mathf.RoundToInt(xpAmount / (1 + 0.05f * _level));
+        _currentXp += Mathf.RoundToInt(xpAmount / (1 + 0.05f * level.Value));
         if (_currentXp >= _xpToLevel)
         {
             LevelUp();
@@ -65,7 +66,7 @@ public class PlayerExperience : MonoBehaviour
     {
         PlayerHealth.AddHpOnLevel?.Invoke();
         _currentXp -= _xpToLevel;
-        _level++;
+        level.Value++;
         GetXpToLevel();
         if (_currentXp > _xpToLevel)
         {
