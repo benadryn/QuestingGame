@@ -24,6 +24,7 @@ public class BanditEnemy : MonoBehaviour
     private Animator _animator;
     private Collider _collider;
     private NavMeshAgent _navMeshAgent;
+    private EnemyMiniMapMarker _enemyMiniMapMarker;
     
     private EnemyRespawn _enemyRespawn;
     private static readonly int IsDead = Animator.StringToHash("isDead");
@@ -52,6 +53,7 @@ public class BanditEnemy : MonoBehaviour
         _currentHealth = maxHealth;
         _collider.enabled = true;
         enemyHealthBar.UpdateHealthBar(maxHealth, _currentHealth);
+        _enemyMiniMapMarker = GetComponent<EnemyMiniMapMarker>();
 
     }
 
@@ -74,10 +76,10 @@ public class BanditEnemy : MonoBehaviour
         _animator.SetBool(IsDead, true);
         _collider.enabled = false;
         _navMeshAgent.enabled = false;
+        _enemyMiniMapMarker.RemoveMiniMapImage();
         QuestManager.Instance.AdvanceKillQuest(GetQuestId(), enemyType);
         PlayerExperience.XpGain?.Invoke(xpToGive);
         StartCoroutine(_enemyRespawn.Respawn(respawnTime, prefab, _startPosition, _startRotation, gameObject));
-        
     }
 
     public void ResetDamaged()

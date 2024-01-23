@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class NpcQuestMarker : MonoBehaviour
 {
-    [SerializeField] private Image exclamationImg;
-    [SerializeField] private Image questionImg;
+    [SerializeField] private Image[] exclamationImg;
+    [SerializeField] private Image[] questionImg;
 
     private Camera _cam;
     // Start is called before the first frame update
@@ -24,20 +24,41 @@ public class NpcQuestMarker : MonoBehaviour
 
     public void ShowExclamation()
     {
-        exclamationImg.gameObject.SetActive(true);
-        questionImg.gameObject.SetActive(false);
+        foreach (var img in exclamationImg)
+        {
+            img.gameObject.SetActive(true);
+        }
+
+        foreach (var img in questionImg)
+        {
+            img.gameObject.SetActive(false);
+        }
     }
 
     public void ShowQuestionMark()
     {
-        exclamationImg.gameObject.SetActive(false);
-        questionImg.gameObject.SetActive(true);
+        foreach (var img in exclamationImg)
+        {
+            img.gameObject.SetActive(false);
+        }
+
+        foreach (var img in questionImg)
+        {
+            img.gameObject.SetActive(true);
+        }
     }
 
     public void HideAllImages()
     {
-        exclamationImg.gameObject.SetActive(false);
-        questionImg.gameObject.SetActive(false);
+        foreach (var img in exclamationImg)
+        {
+            img.gameObject.SetActive(false);
+        }
+
+        foreach (var img in questionImg)
+        {
+            img.gameObject.SetActive(false);
+        }
 
     }
 }

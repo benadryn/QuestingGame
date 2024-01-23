@@ -169,4 +169,5 @@ public class QuestManager : MonoBehaviour
     {
         UpdateSideQuestDetails(activeQuests);
     }
+    
 }

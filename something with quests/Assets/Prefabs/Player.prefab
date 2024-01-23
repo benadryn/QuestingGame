@@ -798,7 +798,6 @@ MonoBehaviour:
   rollGruntSfx:
   - {fileID: 8300000, guid: dd1afca2bac1b0c4db6012ef9b43abee, type: 3}
   - {fileID: 8300000, guid: 8d13fd6918f8f594fae2184801fd0e08, type: 3}
-  - {fileID: 8300000, guid: 8171b9719b3906f46a18380fe4ead53a, type: 3}
   - {fileID: 8300000, guid: 4430e97167f05ae498c6a34d0bc72df7, type: 3}
   audioSource: {fileID: 6688956457726039145}
 --- !u!114 &105242900501345716
@@ -817,7 +816,7 @@ MonoBehaviour:
   strongAttackHoldTime: 0.5
   swordDamage: {fileID: 11400000, guid: 639a9fc5a7797b74f8754ef0d1eeeaf3, type: 2}
   normalAttackDamage: 1.2
-  heavyAttackDamage: 2.2
+  heavyAttackDamageMulti: 1.5
   audioSource: {fileID: 2769525451514549597}
   swordSwingSfx: {fileID: 8300000, guid: 541368f6cf223c4459acff9635c02ccb, type: 3}
   swordCollider: {fileID: 0}
@@ -4932,7 +4931,7 @@ GameObject:
   - component: {fileID: 2885187050141801142}
   - component: {fileID: 9095911429620347920}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Interact Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

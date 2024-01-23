@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Harvest : MonoBehaviour, IHarvestable
 {
     [SerializeField] private float harvestTime = 1.5f;
     private BoxCollider _collider;
     private string _id;
+    [SerializeField] private Image minimapImage;
 
     private void Awake()
     {
@@ -33,6 +35,7 @@ public class Harvest : MonoBehaviour, IHarvestable
     private void SetHarvestable()
     {
         _collider.enabled = true;
+        minimapImage.gameObject.SetActive(true);
     }
 
     public (bool, float) Harvestable(Vector3 playerPosition, float harvestDistance)

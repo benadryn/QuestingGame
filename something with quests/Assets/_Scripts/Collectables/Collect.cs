@@ -1,14 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Collect : MonoBehaviour
 {
     private Collider _collider;
     private QuestManager _questManager;
     private string _id;
+    [SerializeField] private Image minimapImage;
 
     private void Start()
     {
@@ -42,5 +41,6 @@ public class Collect : MonoBehaviour
     private void SetCollectable()
     {
         _collider.enabled = true;
+        minimapImage.gameObject.SetActive(true);
     }
 }
